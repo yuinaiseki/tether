@@ -20,6 +20,7 @@ export const Contacts = ({ onNext, onBack }: ContactsProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      
       <View style={styles.screen}>
         <View style={styles.heading}>
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
@@ -27,7 +28,7 @@ export const Contacts = ({ onNext, onBack }: ContactsProps) => {
           </TouchableOpacity>
           <Text style={styles.headingtext}>Select Contact</Text>
         </View>
-        
+        <ScrollView>
           {contacts.map((contact) => (
             <TouchableOpacity 
               key={contact.id} 
@@ -42,6 +43,7 @@ export const Contacts = ({ onNext, onBack }: ContactsProps) => {
               <Text style={styles.text}>{contact.name}</Text>
             </TouchableOpacity>
           ))}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
