@@ -13,6 +13,10 @@ import AuthGate from './pages/components/AuthGate';
 function AppContent() {
   const [activeTab, setActiveTab] = useState< 'friends' | 'home' | 'profile'>('home');
 
+  //　
+  const [showMessage, setShowMessage] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<{ id: string; name: string } | null>(null);
+
   // supabase stuff : for later
   /*
   useEffect(() => {
@@ -21,20 +25,45 @@ function AppContent() {
     });
   }, []);*/
 
+  const handleContactSelect = (contact: { id: string; name: string }) => {
+    setSelectedContact(contact);
+    setShowMessage(true);
+  };
+
+  const handleBackToContacts = () => {
+    setShowMessage(false);
+    setSelectedContact(null);
+  };
+
+  const handleSendInvite = () => {
+    setShowMessage(false);
+    setSelectedContact(null);
+  };
+
   console.log(activeTab);
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <View style={{ flex: 9 }}>
-        {activeTab === 'friends' && (
+        {activeTab === 'friends' && !showMessage && (
           <Contacts 
-            onNext={() => setActiveTab('friends')} 
-            onBack={() => setActiveTab('friends')} // to-FIX
+            onNext={handleContactSelect} 
+            onBack={() => {}}
+            onSearch={(query) => console.log(query)}
+          />
+        )}
+        {activeTab === 'friends' && showMessage && selectedContact && (
+          <Message 
+            contact={selectedContact}
+            onNext={handleSendInvite} 
+            onBack={handleBackToContacts}
           />
         )}
         {activeTab === 'home' && (
           <Home 
-            onBack={() => setActiveTab('friends')} 
+            onBack={() => {}}
+            onNext={() => {}}
+            onSearch={(query) => console.log(query)}
           />
         )}
         {activeTab === 'profile' && (

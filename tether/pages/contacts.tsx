@@ -2,12 +2,11 @@ import React from 'react';
 import { useState } from "react";
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, TextInput, Image, ImageBackground } from 'react-native';
 import styles from '../styles/styles';
-import { ChevronLeft, Search, ChevronDown } from 'lucide-react-native';
-import { palette } from '../styles/palette';
+import { Search, ChevronDown } from 'lucide-react-native';
 import theme from '../styles/theme';
 
 interface ContactsProps {
-  onNext: () => void;
+  onNext: (contact: { id: string; name: string }) => void;
   onBack: () => void;
   onSearch: (query: string) => void;
 }
@@ -42,9 +41,6 @@ export const Contacts = ({ onNext, onBack, onSearch }: ContactsProps) => {
         
         <View style={styles.screen}>
           <View style={styles.heading}>
-            <TouchableOpacity onPress={onBack} style={styles.backButton}>
-              <ChevronLeft size={40} color={palette.slate} />
-            </TouchableOpacity>
             <Text style={styles.headingtext}>Select Contact</Text>
           </View>
           <View style={[styles.search]}>
@@ -64,11 +60,11 @@ export const Contacts = ({ onNext, onBack, onSearch }: ContactsProps) => {
             {contacts.map((contact) => (
               <TouchableOpacity 
                 key={contact.id} 
-                style={styles.contactCard} 
-                onPress={onNext}
+                style={styles.contactCard}
+                onPress={() => onNext(contact)}
               >
                 <View style={styles.avatar}>
-                  <Image source = {require('../assets/other/frog.png')}/>
+                  <Image source = {require('../assets/frogs/frog.png')}/>
                 </View>
                 <Text style={styles.text}>{contact.name}</Text>
               </TouchableOpacity>
@@ -79,10 +75,10 @@ export const Contacts = ({ onNext, onBack, onSearch }: ContactsProps) => {
               <TouchableOpacity 
                 key={invite.id} 
                 style={styles.contactCard} 
-                onPress={onNext}
+                onPress={() => onNext(invite)}
               >
                 <View style={styles.avatar}>
-                  <Image source = {require('../assets/other/frog.png')}/>
+                  <Image source = {require('../assets/frogs/frog.png')}/>
                 </View>
                 <Text style={styles.text}>{invite.name}</Text>
               </TouchableOpacity>

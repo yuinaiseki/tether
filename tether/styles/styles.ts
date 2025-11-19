@@ -3,6 +3,7 @@ import { palette } from './palette';
 import theme from './theme';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 // Global stylesheet for Tether app using extracted palette
 const globalStyles = StyleSheet.create({
@@ -220,7 +221,7 @@ const globalStyles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     justifyContent: "center",
-    left: 20,
+    left: 8,
     zIndex: 1,
   },
   headingtext: {
@@ -375,17 +376,6 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  cardLarge: {
-    backgroundColor: palette.lightBeige,
-    padding: 24,
-    borderRadius: 16,
-    marginBottom: 16,
-    shadowColor: palette.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2,
-  },
   cardElevated: {
     backgroundColor: palette.lightBeige,
     padding: 24,
@@ -426,6 +416,11 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
+  },
+  avatarText: {
+    color: palette.cream,
+    fontSize: 18,
+    fontWeight: '600',
   },
   contactName: {
     fontSize: 17,
@@ -551,12 +546,18 @@ const globalStyles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: palette.divider,
-    marginVertical: 16,
+    marginVertical: 5,
   },
   dividerThick: {
     height: 2,
     backgroundColor: palette.divider,
     marginVertical: 24,
+  },
+  popup:{
+    width: windowWidth * 0.6,
+    height: windowHeight * 0.3,
+    
+    alignItems: "center",
   },
 
   // Spacing Utilities
@@ -635,7 +636,7 @@ const globalStyles = StyleSheet.create({
   },
   profileHeader: {
     padding: 20,
-    backgroundColor: palette.cream,
+    backgroundColor: palette.lightBeige,
     borderRadius: 20,
     marginBottom: 16,
   },
@@ -804,6 +805,105 @@ const globalStyles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '700',
   },
+  userGraphicItem: {
+    alignItems: 'center',
+  },
+  userImg:{
+    flexDirection: "row", 
+    marginBottom: 0,
+    justifyContent: "center"
+  },
+  userGraphic:{
+    flexDirection: "row", 
+    gap: 60, 
+    marginBottom: 10,
+    justifyContent: "center"
+  },
+  userGraphicLabel: {
+    fontSize: 18,
+    color: palette.mutedBrown,
+    marginTop: 2,
+    fontFamily: "../assets/fonts/AbhayaLibre-Regular.ttf",
+  },
+  chatContainer: {
+    flex: 1,
+    marginBottom: 10,
+  },
+  messageBubble: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 12,
+    maxWidth: '85%',
+  },
+  aiMessage: {
+    backgroundColor: palette.lightBeige,
+    alignSelf: 'flex-start',
+  },
+  userMessage: {
+    backgroundColor: palette.lightGray,
+    alignSelf: 'flex-end',
+  },
+  aiLabel: {
+    fontSize: 12,
+    color: palette.slate,
+    marginBottom: 8,
+    fontFamily: "../assets/fonts/AbhayaLibre-Bold.ttf",
+  },
+  messageText: {
+    fontSize: 15,
+    color: palette.shadow,
+    lineHeight: 22,
+    fontFamily: "../assets/fonts/AbhayaLibre-Regular.ttf",
+  },
+  inputArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  chatInput: {
+    flex: 1,
+    backgroundColor: palette.cream,
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 15,
+    fontStyle: "italic",
+    fontFamily: "../assets/fonts/AbhayaLibre-Regular.ttf",
+    color: palette.darkBrown,
+    borderWidth: 1,
+    borderColor: palette.lightGray,
+    maxHeight: 100,
+  },
+  sendButton: {
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  successModal: {
+    backgroundColor: palette.cream,
+    borderRadius: 20,
+    padding: 40,
+    alignItems: 'center',
+    shadowColor: palette.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  modalCloseButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+  },
+  successText: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 5,
+    color: palette.darkBrown,
+    fontFamily: "../assets/fonts/AbhayaLibre-Bold.ttf",
+  },
+
 });
 
 export default globalStyles;

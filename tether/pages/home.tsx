@@ -63,7 +63,7 @@ export const Home = ({ onBack, onNext, onSearch }: HomeProps) => {
                 onPress={onNext}
               >
                 <View style={styles.avatar}>
-                  <Image source={require('../assets/other/frog.png')}/>
+                  <Image source={require('../assets/frogs/frog.png')}/>
                 </View>
                 <Text style={styles.text}>{contact.name}</Text>
               </TouchableOpacity>
@@ -77,7 +77,7 @@ export const Home = ({ onBack, onNext, onSearch }: HomeProps) => {
               onPress={onNext}
             >
               <View style={styles.avatar}>
-                <Image source = {require('../assets/other/frog.png')}/>
+                <Image source = {require('../assets/frogs/frog.png')}/>
               </View>
               <Text style={styles.text}>{invite.name}</Text>
             </TouchableOpacity>

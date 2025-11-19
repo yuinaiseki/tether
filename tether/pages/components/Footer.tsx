@@ -12,8 +12,8 @@ interface FooterProps {
 
 export default function Footer({ activeTab, setActiveTab }: FooterProps) {
 
-  const activeFrog = require("../../assets/other/cuter_thicker_frog_g3.png")
-  const inactiveFrog = require("../../assets/other/cuter_thicker_frog_b3.png");
+  const activeFrog = require("../../assets/frogs/cuter_thicker_frog_g3.png")
+  const inactiveFrog = require("../../assets/frogs/cuter_thicker_frog_b3.png");
 
   /* less cuter frog icon
   const activeFrog = require("../../assets/other/frog_g.png")

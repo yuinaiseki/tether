@@ -136,18 +136,18 @@ export const Profile = ({ onBack }: ProfileProps) => {
               <View style={styles.profileAvatarRow}>
                 <View style={[styles.profileAvatar, ]}>
                   <Image 
-                    source={require('../assets/other/cute_frog_body.png')}
+                    source={require('../assets/frogs/cute_frog_body.png')}
                     style={[styles.profileAvatarImage,{height:55}, {transform: [{ translateY: 9}, {translateX: -8}]}]}
                     resizeMode="contain"
                     tintColor={profile.iconColor}  // Changes body color only
                   />
                   <Image 
-                    source={require('../assets/other/cute_frog_outline.png')}
+                    source={require('../assets/frogs/cute_frog_outline.png')}
                     style={[styles.profileAvatarImage, { position: 'absolute' }, {transform: [{ translateY: 9}, {translateX: -8}]}]}
                     resizeMode="contain"
                   />
                   <Image 
-                    source={require('../assets/other/cute_frog_cheeks.png')}
+                    source={require('../assets/frogs/cute_frog_cheeks.png')}
                     style={[styles.profileAvatarImage, { position: 'absolute'}, {transform: [{ translateY: 6}, {translateX: -4}]}]}
                   />
                 </View>
@@ -188,7 +188,7 @@ export const Profile = ({ onBack }: ProfileProps) => {
           </View>
         </ScrollView>
 
-        {/* Edit Profile Modal */}
+        {/* Edit Profile Modal!*/}
         <Modal
           animationType="slide"
           transparent={true}
@@ -205,7 +205,6 @@ export const Profile = ({ onBack }: ProfileProps) => {
               </View>
 
               <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Username Input */}
                 <Text style={styles.modalLabel}>Username</Text>
                 <TextInput
                   style={styles.modalInput}
@@ -215,7 +214,6 @@ export const Profile = ({ onBack }: ProfileProps) => {
                   placeholderTextColor={palette.mutedBrown}
                 />
 
-                {/* Bio Input */}
                 <Text style={styles.modalLabel}>Bio</Text>
                 <TextInput
                   style={[styles.modalInput, styles.modalInputMultiline]}
@@ -227,7 +225,6 @@ export const Profile = ({ onBack }: ProfileProps) => {
                   numberOfLines={4}
                 />
 
-                {/* Icon Color Picker */}
                 <Text style={styles.modalLabel}>Icon Color</Text>
                 <View style={styles.colorPicker}>
                   {ICON_COLORS.map((colorOption) => (
