@@ -84,6 +84,10 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 24,
   },
+  image:{
+    width: windowWidth*0.8,
+    height: 200
+  },
   inputLabel: {
     fontSize: 16,
     fontWeight: '600',

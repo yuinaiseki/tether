@@ -6,6 +6,7 @@ import {
   Alert,
   ActivityIndicator,
   KeyboardAvoidingView,
+  Image,
   Platform,
   TouchableOpacity,
   ImageBackground,
@@ -63,8 +64,8 @@ export default function Title() {
             </View>
 
             <View style={styles.imagePlaceholder}>
-              <Text>Change this later :p</Text>
-              <Text>Test credentials are: phone# 1234567890, pw test</Text>
+              <Image source={require("../assets/other/hands.png")} style={styles.image}></Image>
+              <Text style={styles.titleSubtitleItalic}>Test credentials are: phone# 1234567890, pw test</Text>
             </View>
 
             <View style={styles.loginInputContainer}>
