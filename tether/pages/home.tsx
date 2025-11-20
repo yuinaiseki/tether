@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, SafeAreaView, TouchableOpacity, TextInput, ScrollView, Image, ImageBackground } from 'react-native';
 import styles from '../styles/styles';
-import { ChevronDown, ChevronRight, Search } from 'lucide-react-native';
+import { ChevronDown, ChevronRight, Search, Plus } from 'lucide-react-native';
 import theme from '../styles/theme';
 
 interface HomeProps {
@@ -28,6 +28,12 @@ export const Home = ({ onBack, onNext, onSearch }: HomeProps) => {
             onSearch(input.trim());
         }
     };
+
+  const handleAddPortal = () => {
+    // stuff
+    console.log('Add new portal');
+  };
+
 
   return (
     <ImageBackground 
@@ -111,6 +117,24 @@ export const Home = ({ onBack, onNext, onSearch }: HomeProps) => {
             )}
           
         </ScrollView>
+        <View style={{
+            paddingHorizontal: 10,
+            paddingBottom: 10,
+            backgroundColor: 'transparent',
+          }}>
+            <TouchableOpacity 
+              style={[styles.loginInputWrapper, { 
+                justifyContent: 'center', 
+                paddingVertical: 14,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }]}
+              onPress={handleAddPortal}
+            >
+              <Plus size={24} color={theme.button} />
+              <Text style={[styles.text, { fontSize: 18, marginLeft: 8 }]}>Start a new portal</Text>
+            </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
     </ImageBackground>

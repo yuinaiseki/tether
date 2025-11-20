@@ -87,8 +87,9 @@ export default function Signup({ onBack }: SignupProps) {
             <View style={styles.imagePlaceholder}>
               <Image 
                 source={require("../assets/frogs/cute_frogx1.png")} 
-                style={{width: 220, height: 100}} 
+                style={{width: 120, height: 140}} 
               />
+              <Text style={styles.userGraphicLabel}>This could be you</Text>
             </View>
 
             <View style={styles.loginInputContainer}>
@@ -179,8 +180,8 @@ export default function Signup({ onBack }: SignupProps) {
                   Welcome to Tether!
                 </Text>
                 <Image 
-                  source={require("../assets/frogs/cute_frogsx2.png")} 
-                  style={{ height: 200, width: 300, transform: [{ translateY: 50 }] }}
+                  source={require("../assets/other/hands.png")} 
+                  style={{ height: 200, width: 300, transform: [{ translateY: 10 }] }}
                 />
               </View>
             </View>
