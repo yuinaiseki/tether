@@ -61,37 +61,55 @@ export const Portal = ({ contact, onBack }: PortalProps) => {
            
           </ScrollView>
         </View>
-        <Image 
+      </SafeAreaView>
+      <Image 
+            source={spiral} 
+            style={newstyles.spiral} 
+      />
+      <View style={newstyles.elementcontainer}>
+         <Image 
             source={strokemap} 
             style={newstyles.strokemap} 
           />
-      </SafeAreaView>
-      <Image 
-          source={together} 
-          style={newstyles.together} 
-        />
+        <Image 
+            source={together} 
+            style={newstyles.together} 
+          />
+       </View>
     </ImageBackground>
   );
 };
 
 const newstyles = StyleSheet.create({
-  strokemap: {
+  spiral: {
     position: 'absolute',
-    width: SCREEN_WIDTH * 0.6,
-    height: SCREEN_HEIGHT * 0.5,
+    width: SCREEN_WIDTH * 0.3,
+    height: SCREEN_HEIGHT * 0.3,
     resizeMode: 'contain',
-    alignSelf: 'center',
-    top: SCREEN_HEIGHT * 0.2,
+    bottom: SCREEN_HEIGHT * 0.48,
+    left: SCREEN_WIDTH * 0.2,
     zIndex: 1,
   },
+  elementcontainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    gap: 30,
+    paddingTop: 10,
+  },
+  strokemap: {
+    // width: SCREEN_WIDTH * 0.4,
+    // position: 'absolute',
+    // width: SCREEN_WIDTH * 0.6,
+    // height: SCREEN_HEIGHT * 0.5,
+    // resizeMode: 'contain',
+    // alignSelf: 'center',
+    // top: SCREEN_HEIGHT * 0.2,
+    // zIndex: 1,
+  },
   together: {
-    position: 'absolute',
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 1.2, // Make it taller so we can show just the top
-    resizeMode: 'contain',
-    bottom: -SCREEN_HEIGHT * 0.9, // Position so only top ~25% is visible
-    left: 0,
-    right: 0,
-    zIndex: 2,
+    width: "100%",
+    height: "80%",
   },
 });
