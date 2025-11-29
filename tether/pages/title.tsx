@@ -87,7 +87,6 @@ export default function Title({ onSignup, onLoginSuccess }: TitleProps = {}) {
                   <Text style={styles.areaCodeText}>{areaCode} -</Text>
                 </View>
                 <TextInput
-                  ref = {passwordRef}
                   placeholder="phone number"
                   placeholderTextColor={palette.mutedBrown}
                   style={styles.loginInput}
@@ -96,6 +95,7 @@ export default function Title({ onSignup, onLoginSuccess }: TitleProps = {}) {
                   onChangeText={setPhoneNumber}
                   editable={!loading}
                   blurOnSubmit={false}
+                  onSubmitEditing={() => passwordRef.current?.focus()}
                 />
               </View>
             </View>
@@ -103,6 +103,7 @@ export default function Title({ onSignup, onLoginSuccess }: TitleProps = {}) {
             <View style={styles.loginInputContainer}>
               <View style={styles.loginInputWrapper}>
                 <TextInput
+                  ref = {passwordRef}
                   placeholder="password"
                   placeholderTextColor={palette.mutedBrown}
                   secureTextEntry

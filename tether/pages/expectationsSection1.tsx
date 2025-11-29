@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
+  TextInput,
   ImageBackground, 
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  Pressable
+  Pressable,
+  Alert
 } from 'react-native';
 import { palette } from '../styles/palette';
 import { ChevronLeft } from 'lucide-react-native';
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = 'https://iyjdjalbdcstlskoildv.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5amRqYWxiZGNzdGxza29pbGR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzOTA3NTEsImV4cCI6MjA3OTk2Njc1MX0.Oh5zp-WhW8DpzXRYP4exF14cq_oscot7zJsKkzwrPK4'
+const db = createClient(supabaseUrl, supabaseKey)
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -20,6 +28,16 @@ interface ExpectationsSection1Props {
 }
 
 export const ExpectationsSection1 = ({ onBack, onContinue, onBackToPortal }: ExpectationsSection1Props) => {
+  const [textValue, setTextValue] = useState('');
+
+  const submitResponse = async () => {
+      const {data} = await db
+        .from('expectations2')
+        .insert({
+          text: textValue.trim(),
+        })
+        .select();
+  }
   return (
     <ImageBackground 
       source={require("../assets/backgrounds/background_vibrant.png")}
@@ -43,6 +61,20 @@ export const ExpectationsSection1 = ({ onBack, onContinue, onBackToPortal }: Exp
           </View>
 
           <Text style={localStyles.prompt}>What do you want to make sure you stay in control of during this conversation?</Text>
+          
+          <TextInput
+            style={localStyles.textBox}
+            value={textValue}
+            onChangeText={setTextValue}
+            placeholder="Type your thoughts here..."
+            placeholderTextColor={palette.mutedBrown}
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+          />
+          <TouchableOpacity onPress={submitResponse} style={localStyles.savebutton}>
+            <Text style={localStyles.savebuttontext}>Save</Text>
+          </TouchableOpacity>
         </View>
       </View>
       
@@ -80,21 +112,21 @@ const localStyles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 20,
-    paddingTop: 100,
+    paddingTop: 90,
   },
   sectionTitle: {
     fontSize: 28,
     fontFamily: 'Avenir',
     color: palette.mediumBrown,
     fontWeight: '600',
-    marginBottom: 32,
+    marginBottom: 24,
     textAlign: 'center',
   },
   bulletList: {
-    marginBottom: 32,
+    marginBottom: 24,
     width: '100%',
     paddingHorizontal: 30,
   },
@@ -113,6 +145,42 @@ const localStyles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 20,
     lineHeight: 26,
+    marginBottom: 16,
+  },
+  textBox: {
+    backgroundColor: palette.lightBeige,
+    borderRadius: 16,
+    padding: 16,
+    fontSize: 17,
+    fontFamily: 'Avenir',
+    color: palette.darkBrown,
+    minHeight: 120,
+    width: '90%',
+    marginTop: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: palette.lightGray,
+    textAlignVertical: 'top',
+  },
+  savebutton: {
+    backgroundColor: palette.slate,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
+    shadowColor: palette.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  savebuttontext: {
+    fontSize: 16,
+    fontFamily: 'Avenir',
+    color: palette.cream,
+    fontWeight: '600',
   },
   continueButton: {
     position: 'absolute',

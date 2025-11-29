@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
+  TextInput,
   ImageBackground, 
   TouchableOpacity,
   StyleSheet,
@@ -20,6 +21,8 @@ interface ExpectationsSection4Props {
 }
 
 export const ExpectationsSection4 = ({ onBack, onContinue, onBackToPortal }: ExpectationsSection4Props) => {
+  const [textValue, setTextValue] = useState('');
+
   return (
     <ImageBackground 
       source={require("../assets/backgrounds/background_vibrant.png")}
@@ -45,6 +48,17 @@ export const ExpectationsSection4 = ({ onBack, onContinue, onBackToPortal }: Exp
           </View>
 
           <Text style={localStyles.prompt}>What's the minimum that would still make this conversation worthwhile?</Text>
+          
+          <TextInput
+            style={localStyles.textBox}
+            value={textValue}
+            onChangeText={setTextValue}
+            placeholder="Type your thoughts here..."
+            placeholderTextColor={palette.mutedBrown}
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+          />
         </View>
       </View>
       
@@ -85,7 +99,7 @@ const localStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    paddingTop: 100,
+    paddingTop: 60,
   },
   sectionTitle: {
     fontSize: 28,
@@ -124,6 +138,21 @@ const localStyles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 20,
     lineHeight: 26,
+    marginBottom: 24,
+  },
+  textBox: {
+    backgroundColor: palette.lightBeige,
+    borderRadius: 16,
+    padding: 16,
+    fontSize: 17,
+    fontFamily: 'Avenir',
+    color: palette.darkBrown,
+    minHeight: 120,
+    width: '90%',
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: palette.lightGray,
+    textAlignVertical: 'top',
   },
   continueButton: {
     position: 'absolute',

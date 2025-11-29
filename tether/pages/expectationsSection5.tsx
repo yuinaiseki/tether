@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
+  TextInput,
   ImageBackground, 
   TouchableOpacity,
   StyleSheet,
@@ -20,6 +21,8 @@ interface ExpectationsSection5Props {
 }
 
 export const ExpectationsSection5 = ({ onBack, onContinue, onBackToPortal }: ExpectationsSection5Props) => {
+  const [textValue, setTextValue] = useState('');
+
   return (
     <ImageBackground 
       source={require("../assets/backgrounds/background_vibrant.png")}
@@ -46,6 +49,17 @@ export const ExpectationsSection5 = ({ onBack, onContinue, onBackToPortal }: Exp
             <Text style={localStyles.example}>"My job is to communicate clearly, not control the outcome."</Text>
             <Text style={localStyles.example}>"I'm having this conversation because I care."</Text>
           </View>
+          
+          <TextInput
+            style={localStyles.textBox}
+            value={textValue}
+            onChangeText={setTextValue}
+            placeholder="Type your thoughts here..."
+            placeholderTextColor={palette.mutedBrown}
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+          />
         </View>
       </View>
       
@@ -86,7 +100,7 @@ const localStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    paddingTop: 80,
+    paddingTop: 60,
   },
   sectionTitle: {
     fontSize: 28,
@@ -128,6 +142,20 @@ const localStyles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 8,
     paddingLeft: 16,
+  },
+  textBox: {
+    backgroundColor: palette.lightBeige,
+    borderRadius: 16,
+    padding: 16,
+    fontSize: 17,
+    fontFamily: 'Avenir',
+    color: palette.darkBrown,
+    minHeight: 120,
+    width: '90%',
+    marginTop: 24,
+    borderWidth: 1,
+    borderColor: palette.lightGray,
+    textAlignVertical: 'top',
   },
   continueButton: {
     position: 'absolute',
