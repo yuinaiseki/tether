@@ -38,6 +38,7 @@ export const ExpectationsSection1 = ({ onBack, onContinue, onBackToPortal }: Exp
       const { data, error } = await db
         .from('expectations2')
         .select('text')
+        .eq('section', 'section1')
         .order('created_at', { ascending: false })
         .limit(1);
       
@@ -74,6 +75,7 @@ export const ExpectationsSection1 = ({ onBack, onContinue, onBackToPortal }: Exp
         .from('expectations2')
         .insert({
           text: textValue.trim(),
+          section: 'section1',
         })
         .select();
       
