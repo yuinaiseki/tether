@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   View, 
   Text, 
@@ -11,7 +11,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   SafeAreaView,
-  Modal
+  Modal,
+  Animated
 } from 'react-native';
 import styles from '../styles/styles';
 import { UserPlus, ChevronLeft, X } from 'lucide-react-native';
@@ -32,6 +33,24 @@ export default function Signup({ onBack, onSignupSuccess }: SignupProps) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+
+  useEffect(() => {
+    // Fade in and slide up animation on mount
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [fadeAnim, slideAnim]);
 
   const handleSignup = async () => {
     if (!phoneNumber || !password || !confirmPassword) {
@@ -75,6 +94,13 @@ export default function Signup({ onBack, onSignupSuccess }: SignupProps) {
       resizeMode='cover'
     >
       <SafeAreaView style={{ flex: 1 }}>
+        <Animated.View
+          style={{
+            flex: 1,
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }}
+        >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}
@@ -164,6 +190,7 @@ export default function Signup({ onBack, onSignupSuccess }: SignupProps) {
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
+        </Animated.View>
 
         {/* Success Modal */}
         <Modal

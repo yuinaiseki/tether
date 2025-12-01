@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Pressable, Image, StyleSheet, Dimensions, ImageBackground } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Pressable, Image, StyleSheet, Dimensions, ImageBackground, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { palette } from '../styles/palette';
 
@@ -17,9 +17,48 @@ interface Onboard2Props {
 }
 
 export default function Onboard2({ onContinue }: Onboard2Props) {
-  const handleContinue = () => {
-    onContinue();
-  };
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+
+  useEffect(() => {
+    // Fade in and slide up animation on mount
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [fadeAnim, slideAnim]);
+
+  useEffect(() => {
+    // Start transition animation after 3 seconds
+    const timer = setTimeout(() => {
+      // Fade out and slide up
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 450,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: -50,
+          duration: 450,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        // Transition to next screen after animation completes
+        onContinue();
+      });
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [fadeAnim, slideAnim, onContinue]);
 
   return (
     <ImageBackground 
@@ -27,7 +66,15 @@ export default function Onboard2({ onContinue }: Onboard2Props) {
       style={styles.background}
       resizeMode='cover'
     >
-      <View style={styles.container}>
+      <Animated.View 
+        style={[
+          styles.container,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }
+        ]}
+      >
         <View style={styles.topTextContainer}>
           <Text style={styles.topTextLine}>The journey starts</Text>
           <Text style={styles.topTextLine}>with reaching out to</Text>
@@ -44,32 +91,31 @@ export default function Onboard2({ onContinue }: Onboard2Props) {
           style={styles.wavyPath}
         />
 
-        <View style={styles.node1Container}>
+        <View style={styles.nodesContainer}>
+          <View style={styles.nodeContainer}>
             <Image 
               source={number1} 
               style={styles.nodeIcon}
             />
-        </View>
-
-        <View style={styles.node2Container}>
+          </View>
+          <View style={styles.nodeContainer}>
             <Image 
               source={lock} 
               style={styles.nodeIcon}
             />
-        </View>
-
-        <View style={styles.node3Container}>
+          </View>
+          <View style={styles.nodeContainer}>
             <Image 
               source={lock} 
               style={styles.nodeIcon}
             />
-        </View>
-
-        <View style={styles.node4Container}>
+          </View>
+          <View style={styles.nodeContainer}>
             <Image 
               source={lock} 
               style={styles.nodeIcon}
             />
+          </View>
         </View>
 
         
@@ -83,14 +129,7 @@ export default function Onboard2({ onContinue }: Onboard2Props) {
           <Text style={styles.bottomTextLine}>...often the</Text>
           <Text style={styles.bottomTextLine}>hardest part.</Text>
         </View>
-
-        <Pressable
-          style={styles.continueButton}
-          onPress={handleContinue}
-        >
-          <Text style={styles.continueButtonText}>Continue</Text>
-        </Pressable>
-      </View>
+      </Animated.View>
     </ImageBackground>
   );
 }
@@ -126,11 +165,11 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   topTextLine: {
-    fontSize: 22,
+    fontSize: 26,
     fontFamily: 'Avenir',
     color: palette.darkGray,
     lineHeight: 30,
-    fontWeight: '400',
+    fontWeight: '500',
   },
   leftCharacter: {
     position: 'absolute',
@@ -151,46 +190,23 @@ const styles = StyleSheet.create({
     tintColor: palette.darkGray,
     zIndex: 1,
   },
-  node1Container: {
-    position: 'absolute',
-    top: SCREEN_HEIGHT * 0.28,
-    left: SCREEN_WIDTH * 0.15,
-    zIndex: 2,
-  },
-  node2Container: {
+  nodesContainer: {
     position: 'absolute',
     top: SCREEN_HEIGHT * 0.4,
-    right: SCREEN_WIDTH * 0.2,
-    zIndex: 2,
-  },
-  node3Container: {
-    position: 'absolute',
-    top: SCREEN_HEIGHT * 0.55,
-    left: SCREEN_WIDTH * 0.15,
-    zIndex: 2,
-  },
-  node4Container: {
-    position: 'absolute',
-    top: SCREEN_HEIGHT * 0.65,
-    right: SCREEN_WIDTH * 0.2,
-    zIndex: 2,
-  },
-  nodeCircle: {
-    width: SCREEN_WIDTH * 0.12,
-    height: SCREEN_WIDTH * 0.12,
-    borderRadius: SCREEN_WIDTH * 0.06,
-    backgroundColor: '#E8F5D0', // Light green with yellow-orange gradient
-    justifyContent: 'center',
+    left: SCREEN_WIDTH * 0.1,
+    right: SCREEN_WIDTH * 0.1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: palette.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    zIndex: 2,
+  },
+  nodeContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   nodeIcon: {
-    width: SCREEN_WIDTH * 0.06,
-    height: SCREEN_WIDTH * 0.06,
+    width: SCREEN_WIDTH * 0.2,
+    height: SCREEN_WIDTH * 0.2,
     resizeMode: 'contain',
   },
   rightCharacter: {
@@ -210,35 +226,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   bottomTextLine: {
-    fontSize: 22,
+    fontSize: 24,
     fontFamily: 'Avenir',
     color: palette.darkGray,
     lineHeight: 22,
-    fontWeight: '400',
-  },
-  continueButton: {
-    position: 'absolute',
-    bottom: SCREEN_HEIGHT * 0.08,
-    left: SCREEN_WIDTH * 0.5,
-    transform: [{ translateX: -SCREEN_WIDTH * 0.2 }],
-    backgroundColor: palette.lightBeige,
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    borderRadius: 30,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 5,
-    shadowColor: palette.shadow,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  continueButtonText: {
-    fontSize: 18,
-    fontFamily: 'Avenir',
-    color: palette.mediumBrown,
     fontWeight: '500',
   },
 });

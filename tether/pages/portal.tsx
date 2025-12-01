@@ -20,9 +20,10 @@ const spiral = require('../assets/portal/everything1.png');
 const together = require('../assets/portal/together.png');
 const expectationsnum= require('../assets/portal/expectation#image.png');
 const expectations = require('../assets/portal/expectations.png');
-const reflect = require('../assets/portal/reflect.png');
 const expectations_text = require('../assets/portal/expectation_word.png');
-const lock = require('../assets/portal/lock.png');
+const greylock = require('../assets/portal/grey_lock.png');
+const reflect = require('../assets/portal/reflect_icon.png');
+const three = require('../assets/portal/three_circle.png');
 
 
 
@@ -99,16 +100,21 @@ export const Portal = ({ contact, onBack, onNavigateToExpectations, onNavigateTo
               style={newstyles.expectations} 
         />
       </TouchableOpacity>
-
-      <TouchableOpacity 
-        onPress={onNavigateToReflect}
-        style={newstyles.reflectTouchable}
-      >  
-        <Image 
-              source={reflect} 
-              style={newstyles.reflect} 
-        />
-      </TouchableOpacity>
+        <View style={newstyles.reflectContainer}> 
+          <Image 
+            source={reflect} 
+            style={newstyles.reflect} 
+          />
+          <TouchableOpacity 
+            onPress={onNavigateToReflect}
+            style={newstyles.reflectTouchable}
+          >  
+            <Image 
+                  source={three} 
+                  style={newstyles.three} 
+            />
+          </TouchableOpacity>
+        </View>
 
       <View style={newstyles.elementcontainer}>
          <Image 
@@ -207,7 +213,11 @@ const newstyles = StyleSheet.create({
     height: '100%',
     resizeMode: 'contain',
   },
-  reflectTouchable: {
+  reflectContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 0,
     position: 'absolute',
     width: SCREEN_WIDTH * 0.4,
     height: SCREEN_HEIGHT * 0.4,
@@ -215,11 +225,13 @@ const newstyles = StyleSheet.create({
     left: SCREEN_WIDTH * 0.1,
     zIndex: 1,
   },
-  reflect: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
+  reflectTouchable: {
   },
+  reflect: {
+  },
+  three: {
+  },
+
   elementcontainer: {
     flex: 1,
     justifyContent: 'center',
