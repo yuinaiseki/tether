@@ -43,12 +43,12 @@ export default function Onboard2({ onContinue }: Onboard2Props) {
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 0,
-          duration: 450,
+          duration: 490,
           useNativeDriver: true,
         }),
         Animated.timing(slideAnim, {
           toValue: -50,
-          duration: 450,
+          duration: 490,
           useNativeDriver: true,
         }),
       ]).start(() => {
