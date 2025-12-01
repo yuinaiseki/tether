@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Pressable, Image, StyleSheet, Dimensions, ImageBackground } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Image, StyleSheet, Dimensions, ImageBackground, Animated } from 'react-native';
 import { palette } from '../styles/palette';
 
 const leftprofile = require('../assets/onboard1/leftprofile.png');
@@ -18,9 +18,32 @@ interface Onboard1Props {
 }
 
 export default function Onboard1({ onContinue }: Onboard1Props) {
-  const handleContinue = () => {
-    onContinue();
-  };
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const slideAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Start animation after 3 seconds
+    const timer = setTimeout(() => {
+      // Fade out and slide up
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 450,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: -50,
+          duration: 450,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        // Transition to next screen after animation completes
+        onContinue();
+      });
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [fadeAnim, slideAnim, onContinue]);
 
   return (
     <ImageBackground 
@@ -28,12 +51,20 @@ export default function Onboard1({ onContinue }: Onboard1Props) {
       style={styles.background}
       resizeMode='cover'
     >
-      <View style={styles.container}>
+      <Animated.View 
+        style={[
+          styles.container,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }
+        ]}
+      >
         {/* Upper left text */}
         <View style={styles.topTextContainer}>
           <Text style={styles.topTextLine}>difficult</Text>
           <Text style={styles.topTextLine}>conversations are</Text>
-          <Text style={styles.topTextLine}>hard</Text>
+          <Text style={styles.topTextLine}>hard...</Text>
         </View>
 
         {/* Left profile image */}
@@ -62,16 +93,8 @@ export default function Onboard1({ onContinue }: Onboard1Props) {
         />
         
         {/* Bottom center text */}
-        <Text style={styles.helpText}>we're here to help</Text>
-        
-        {/* Continue Button */}
-        <Pressable
-          style={styles.continueButton}
-          onPress={handleContinue}
-        >
-          <Text style={styles.continueButtonText}>Continue</Text>
-        </Pressable>
-      </View>
+        <Text style={styles.helpText}>...we're here to help</Text>
+      </Animated.View>
     </ImageBackground>
   );
 }
@@ -96,11 +119,11 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   topTextLine: {
-    fontSize: 24,
+    fontSize: 26,
     fontFamily: 'Avenir',
     color: palette.darkGray,
     lineHeight: 32,
-    fontWeight: '400',
+    fontWeight: '500',
   },
   peopleContainer: {
     flex: 1,
@@ -145,33 +168,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: SCREEN_HEIGHT * 0.03,
     right: SCREEN_WIDTH * 0.1,
-    fontSize: 24,
+    fontSize: 26,
     fontFamily: 'Avenir',
     color: palette.darkGray,
     textAlign: 'right',
     zIndex: 2,
-  },
-  continueButton: {
-    position: 'absolute',
-    top: SCREEN_HEIGHT * 0.05,
-    right: SCREEN_WIDTH * 0.1,
-    backgroundColor: palette.lightBeige,
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 30,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 10,
-    shadowColor: palette.shadow,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  continueButtonText: {
-    fontSize: 18,
-    fontFamily: 'Avenir',
-    color: palette.mediumBrown,
+    fontWeight: '500',
   },
 });

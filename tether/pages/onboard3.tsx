@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     top: SCREEN_HEIGHT * 0.15,
     left: 0,
     right: 0,
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: 'Avenir',
     color: palette.darkBrown,
     fontWeight: '500',

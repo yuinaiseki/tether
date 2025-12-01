@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   View, 
   Text, 
@@ -10,7 +10,8 @@ import {
   Platform,
   TouchableOpacity,
   ImageBackground,
-  SafeAreaView
+  SafeAreaView,
+  Animated
 } from 'react-native';
 import styles from '../styles/styles';
 import { LogIn } from 'lucide-react-native';
@@ -31,6 +32,24 @@ export default function Title({ onSignup }: TitleProps = {}) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+
+  useEffect(() => {
+    // Fade in and slide up animation on mount
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [fadeAnim, slideAnim]);
 
   const handleLogin = async () => {
     if (!phoneNumber || !password) {
@@ -57,6 +76,13 @@ export default function Title({ onSignup }: TitleProps = {}) {
       resizeMode='cover'
     >
       <SafeAreaView style={{ flex: 1 }}>
+        <Animated.View
+          style={{
+            flex: 1,
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }}
+        >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1, justifyContent: "center", alignItems: "center"  }}
@@ -126,6 +152,7 @@ export default function Title({ onSignup }: TitleProps = {}) {
               </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>
+        </Animated.View>
       </SafeAreaView>
     </ImageBackground>
 
