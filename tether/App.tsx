@@ -7,6 +7,7 @@ import { Portal } from './pages/portal/portal';
 import { Home } from './pages/home';
 import { Profile } from './pages/profile';
 import { ExpectationsIntro } from './pages/portal/expectationsIntro';
+import { AIPage } from './pages/portal/aipage';
 import { ExpectationsSection1 } from './pages/portal/expectationsSection1';
 import { ExpectationsSection2 } from './pages/portal/expectationsSection2';
 import { ExpectationsSection3 } from './pages/portal/expectationsSection3';
@@ -35,6 +36,7 @@ function AppContent() {
   const [showMessage, setShowMessage] = useState(false);
   const [showPortal, setShowPortal] = useState(false);
   const [showExpectationsIntro, setShowExpectationsIntro] = useState(false);
+  const [showAIPage, setShowAIPage] = useState(false);
   const [showExpectationsSection1, setShowExpectationsSection1] = useState(false);
   const [showExpectationsSection2, setShowExpectationsSection2] = useState(false);
   const [showExpectationsSection3, setShowExpectationsSection3] = useState(false);
@@ -47,6 +49,7 @@ function AppContent() {
   const [showConversation, setShowConversation] = useState(false);
   const [showPause, setShowPause] = useState(false);
   const [isNewPortalRequest, setIsNewPortalRequest] = useState(false);
+  const [expectationsCompleted, setExpectationsCompleted] = useState(false);
 
   // supabase stuff : for later
   /*
@@ -59,6 +62,7 @@ function AppContent() {
   const handleContactSelect = (contact: { id: string; name: string }, isInvite?: boolean) => {
     setSelectedContact(contact);
     setIsNewPortalRequest(false);
+    setExpectationsCompleted(false); // Reset expectations completion for new contact
     if (isInvite) {
       // Navigate to initiate conversation (Message page) for invites
       setShowMessage(true);
@@ -74,6 +78,7 @@ function AppContent() {
     setShowMessage(false);
     setShowPortal(false);
     setShowExpectationsIntro(false);
+    setShowAIPage(false);
     setShowExpectationsSection1(false);
     setShowExpectationsSection2(false);
     setShowExpectationsSection3(false);
@@ -92,9 +97,14 @@ function AppContent() {
     setShowPortal(false);
   };
 
+  const handleNavigateToAIPage = () => {
+    setShowAIPage(true);
+    setShowExpectationsIntro(false);
+  };
+
   const handleNavigateToSection1 = () => {
     setShowExpectationsSection1(true);
-    setShowExpectationsIntro(false);
+    setShowAIPage(false);
   };
 
   const handleNavigateToSection2 = () => {
@@ -120,6 +130,7 @@ function AppContent() {
   const handleNavigateToComplete = () => {
     setShowExpectationsComplete(true);
     setShowExpectationsSection5(false);
+    setExpectationsCompleted(true); // Mark expectations as completed
   };
 
   const handleNavigateToReflect = () => {
@@ -134,6 +145,7 @@ function AppContent() {
 
   const handleBackToPortal = () => {
     setShowExpectationsIntro(false);
+    setShowAIPage(false);
     setShowExpectationsSection1(false);
     setShowExpectationsSection2(false);
     setShowExpectationsSection3(false);
@@ -146,8 +158,13 @@ function AppContent() {
   };
 
   const handleBackToExpectationsIntro = () => {
-    setShowExpectationsSection1(false);
+    setShowAIPage(false);
     setShowExpectationsIntro(true);
+  };
+
+  const handleBackToAIPage = () => {
+    setShowExpectationsSection1(false);
+    setShowAIPage(true);
   };
 
   const handleBackToSection1 = () => {
@@ -185,6 +202,7 @@ const handleTabChange = (tab: 'friends' | 'home' | 'profile') => {
     setShowMessage(false);
     setShowPortal(false);
     setShowExpectationsIntro(false);
+    setShowAIPage(false);
     setShowExpectationsSection1(false);
     setShowExpectationsSection2(false);
     setShowExpectationsSection3(false);
@@ -222,7 +240,7 @@ const handleTabChange = (tab: 'friends' | 'home' | 'profile') => {
 
   console.log(activeTab);
   
-  const showOverlay = showExpectationsIntro || showExpectationsSection1 || showExpectationsSection2 || 
+  const showOverlay = showExpectationsIntro || showAIPage || showExpectationsSection1 || showExpectationsSection2 || 
     showExpectationsSection3 || showExpectationsSection4 || showExpectationsSection5 || 
     showExpectationsComplete || showReflect || showAcceptInvite;
   
@@ -237,12 +255,13 @@ const handleTabChange = (tab: 'friends' | 'home' | 'profile') => {
             onSearch={(query) => console.log(query)}
           />
         )}
-        {activeTab === 'friends' && !showOverlay && showPortal && !showConversation && !showPause && !showExpectationsIntro && !showExpectationsSection1 && 
+        {activeTab === 'friends' && !showOverlay && showPortal && !showConversation && !showPause && !showExpectationsIntro && !showAIPage && !showExpectationsSection1 && 
           !showExpectationsSection2 && !showExpectationsSection3 && !showExpectationsSection4 && 
           !showExpectationsSection5 && !showExpectationsComplete && !showReflect && !showAcceptInvite && selectedContact && (
           <Portal 
             contact={selectedContact}
             isNewPortalRequest={isNewPortalRequest}
+            expectationsCompleted={expectationsCompleted}
             onBack={handleBackToContacts}
             onNavigateToExpectations={handleNavigateToExpectations}
             onNavigateToReflect={handleNavigateToReflect}
@@ -253,13 +272,20 @@ const handleTabChange = (tab: 'friends' | 'home' | 'profile') => {
         {activeTab === 'friends' && showExpectationsIntro && (
           <ExpectationsIntro 
             onBack={handleBackToPortal} 
+            onContinue={handleNavigateToAIPage}
+            onBackToPortal={handleBackToPortal}
+          />
+        )}
+        {activeTab === 'friends' && showAIPage && (
+          <AIPage 
+            onBack={handleBackToExpectationsIntro} 
             onContinue={handleNavigateToSection1}
             onBackToPortal={handleBackToPortal}
           />
         )}
         {activeTab === 'friends' && showExpectationsSection1 && (
           <ExpectationsSection1 
-            onBack={handleBackToExpectationsIntro} 
+            onBack={handleBackToAIPage} 
             onContinue={handleNavigateToSection2}
             onBackToPortal={handleBackToPortal}
           />

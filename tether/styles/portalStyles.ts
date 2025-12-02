@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { palette } from './palette';
 
-const chosenFont = "../assets/fonts/AbhayaLibre-Bold.ttf" // or "Avenir"
+const chosenFont = "Avenir" // Changed to Avenir for expectations pages
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 

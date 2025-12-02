@@ -105,7 +105,7 @@ export const ExpectationsSection5 = ({ onBack, onContinue, onBackToPortal }: Exp
         
         <ScrollView 
           style={portalStyles.scrollView}
-          contentContainerStyle={portalStyles.scrollContent}
+          contentContainerStyle={[portalStyles.scrollContent, { paddingTop: 40 }]}
           showsVerticalScrollIndicator={true}
         >
           <View style={portalStyles.content}>
