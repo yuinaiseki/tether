@@ -102,6 +102,13 @@ const convoStyles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.41,
     alignItems: 'center',
   },
+  resourceCard2: {
+    backgroundColor: palette.cream + '95',
+    borderRadius: 16,
+    padding: 9,
+    width: SCREEN_WIDTH * 0.41,
+    alignItems: 'center',
+  },
   resourceIcon: {
     width: 48,
     height: 48,
@@ -119,6 +126,14 @@ const convoStyles = StyleSheet.create({
     color: palette.slate,
     textAlign: 'center',
     fontWeight: '500',
+  },
+  resourcesTitle: {
+    fontSize: 20,
+    fontFamily: chosenFont,
+    color: palette.slate,
+    textAlign: 'center',
+    fontWeight: '500',
+    marginBottom: 10,
   },
   pauseHintText: {
     fontSize: 15,

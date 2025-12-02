@@ -15,9 +15,10 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles/styles';
+import convoStyles from '../styles/convoStyles';
 import theme from '../styles/theme';
 import { palette } from '../styles/palette';
-import { LogOut, Edit2, X, Check } from 'lucide-react-native';
+import { LogOut, Edit2, X, Check, Lightbulb, MessageCircleHeart, Brain, ShieldBan, Goal, Snail, CircleQuestionMark } from 'lucide-react-native';
 import useSession from '../utils/useSession';
 
 const PROFILE_KEY = '@tether_profile';
@@ -36,7 +37,7 @@ const ICON_COLORS = [
   { name: 'Slate', color: palette.slate },
   { name: 'Teal', color: palette.teal },
   { name: 'Sage', color: palette.sage },
-  { name: 'Coral', color: palette.coral },
+  { name: 'Beige', color: palette.beige },
   { name: 'Brown', color: palette.darkBrown },
   { name: 'Medium Brown', color: palette.mediumBrown },
 ];
@@ -187,6 +188,61 @@ export const Profile = ({ onBack }: ProfileProps) => {
               </View>
             </View>
           </View>
+          <View style={convoStyles.resourcesSection}>
+          <Text style={convoStyles.resourcesTitle}>Conversation Resources</Text>
+          
+          <View style={convoStyles.resourcesGrid}>
+            
+            <TouchableOpacity style={convoStyles.resourceCard2}>
+              <View style={[convoStyles.resourceIcon, { backgroundColor: palette.teal }]}>
+              <Lightbulb size={35} color={palette.cream}/>
+            </View>
+              <Text style={convoStyles.resourceTitle}>Conversation Starters</Text>
+              <Text style={convoStyles.resourceSubtitle}>Prompts to move forward</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={convoStyles.resourceCard2}>
+              <View style={[convoStyles.resourceIcon, { backgroundColor: palette.mutedBrown }]}>
+              <Brain size={35} color={palette.cream}/>
+            </View>
+              <Text style={convoStyles.resourceTitle}>Empathy Prompts</Text>
+              <Text style={convoStyles.resourceSubtitle}>Understand their perspective</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={convoStyles.resourceCard2}>
+              <View style={[convoStyles.resourceIcon, { backgroundColor: palette.sage }]}>
+              <ShieldBan size={35} color={palette.cream}/>
+            </View>
+              <Text style={convoStyles.resourceTitle}>Boundary Setting</Text>
+              <Text style={convoStyles.resourceSubtitle}>Respectful ways to set limits</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={convoStyles.resourceCard2}>
+                <View style={[convoStyles.resourceIcon, { backgroundColor: palette.slate }]}>
+                <Goal size={33} color={palette.cream}/>
+                </View>
+              <Text style={convoStyles.resourceTitle}>Goal Setting</Text>
+              <Text style={convoStyles.resourceSubtitle}>How to set conversation goals</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={convoStyles.resourceCard2}>
+              <View style={[convoStyles.resourceIcon, { backgroundColor: palette.mediumGray }]}>
+              <Snail size={35} color={palette.cream}/>
+            </View>
+              <Text style={convoStyles.resourceTitle}>De-escalation Tactics</Text>
+              <Text style={convoStyles.resourceSubtitle}>Calm heated{'\n'}moments</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={convoStyles.resourceCard2}>
+              <View style={[convoStyles.resourceIcon, { backgroundColor: palette.orange }]}>
+              <CircleQuestionMark size={35} color={palette.cream}/>
+            </View>
+              <Text style={convoStyles.resourceTitle}>Reflection Questions</Text>
+              <Text style={convoStyles.resourceSubtitle}>Deepen mutual{'\n'}understanding</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+          
         </ScrollView>
 
         {/* Edit Profile Modal!*/}

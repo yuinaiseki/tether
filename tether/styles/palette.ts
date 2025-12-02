@@ -25,4 +25,7 @@ export const palette = {
   white: '#FFFFFF',        // Pure white
   divider: '#E5DED2',      // Divider lines
   shadow: '#3D332E',       // Shadow color
+
+  //more
+  orange: '#bc9f91ff',
 };

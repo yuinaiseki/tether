@@ -789,7 +789,8 @@ const globalStyles = StyleSheet.create({
   },
   profileHeader: {
     padding: 20,
-    backgroundColor: palette.lightBeige,
+    backgroundColor: palette.cream + "95",
+    margin: 10,
     borderRadius: 20,
     marginBottom: 16,
   },
