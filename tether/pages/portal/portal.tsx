@@ -16,15 +16,19 @@ import portalStyles from '../../styles/portalStyles';
 
 const Back = require('../../assets/portal/Back.png');
 const strokemap = require('../../assets/portal/strokemap.png');
-const spiral = require('../../assets/portal/everything1.png');
+
 const together = require('../../assets/portal/together.png');
 const expectationsnum= require('../../assets/portal/expectation#image.png');
-const expectations = require('../../assets/portal/expectations.png');
-const expectations_text = require('../../assets/portal/expectation_word.png');
-const greylock = require('../../assets/portal/grey_lock.png');
 const reflect = require('../../assets/portal/reflect_icon.png');
 const three = require('../../assets/portal/three_circle.png');
 
+const one = require('../../assets/portal/one.png');
+const spiral = require('../../assets/portal/spiral_res.png');
+const invite = require('../../assets/portal/invite.png');
+const two = require('../../assets/portal/two.png');
+const expectations = require('../../assets/portal/expectations_.png');
+const lock = require('../../assets/portal/graylock.png');
+const assurances = require('../../assets/portal/assurances.png');
 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -78,10 +82,19 @@ export const Portal = ({ contact, onBack, onNavigateToExpectations, onNavigateTo
         style={portalStyles.spiralTouchable}
       >
         <Image 
+          source={one} 
+          style={portalStyles.one} 
+        />
+      </TouchableOpacity>
+      <Image 
+          source={invite} 
+          style={portalStyles.invite} 
+      />
+
+      <Image 
               source={spiral} 
               style={portalStyles.spiral} 
         />
-      </TouchableOpacity>
       {/* <View style={portalStyles.expectations_text_container}>
         <Image 
           source={expectations_text} 
@@ -97,26 +110,29 @@ export const Portal = ({ contact, onBack, onNavigateToExpectations, onNavigateTo
         style={portalStyles.expectationsTouchable}
       >
         <Image 
-              source={expectationsnum} 
-              style={portalStyles.expectations} 
+              source={two} 
+              style={portalStyles.two} 
         />
       </TouchableOpacity>
+      <Image 
+        source={expectations} 
+        style={portalStyles.expectationsImage} 
+      />
       <View style={portalStyles.reflectContainer}> 
         <TouchableOpacity 
           onPress={onNavigateToReflect}
           style={portalStyles.reflectTouchable}
         > 
-        <Image 
-          source={reflect} 
-          style={portalStyles.reflect} 
-        />
-          
           <Image 
-                source={three} 
-                style={portalStyles.three} 
+            source={lock} 
+            style={portalStyles.lock} 
           />
         </TouchableOpacity>
       </View>
+      <Image 
+        source={assurances} 
+        style={portalStyles.assurances} 
+      />
       
       <TouchableOpacity 
         style={portalStyles.portalCallButton}
