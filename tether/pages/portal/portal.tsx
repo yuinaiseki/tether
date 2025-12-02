@@ -35,6 +35,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface PortalProps {
   contact: { id: string; name: string };
+  isNewPortalRequest?: boolean;
   onBack: () => void;
   onNavigateToExpectations: () => void;
   onNavigateToReflect: () => void;
@@ -42,7 +43,7 @@ interface PortalProps {
   onStartCall?: () => void;
 }
 
-export const Portal = ({ contact, onBack, onNavigateToExpectations, onNavigateToReflect, onNavigateToAcceptInvite, onStartCall }: PortalProps) => {
+export const Portal = ({ contact, isNewPortalRequest = false, onBack, onNavigateToExpectations, onNavigateToReflect, onNavigateToAcceptInvite, onStartCall }: PortalProps) => {
   return (
     <ImageBackground 
       source={require("../../assets/backgrounds/background_vibrant.png")}
@@ -110,7 +111,7 @@ export const Portal = ({ contact, onBack, onNavigateToExpectations, onNavigateTo
         style={portalStyles.expectationsTouchable}
       >
         <Image 
-              source={two} 
+              source={isNewPortalRequest ? lock : two} 
               style={portalStyles.two} 
         />
       </TouchableOpacity>
