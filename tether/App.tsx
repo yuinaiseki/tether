@@ -46,6 +46,7 @@ function AppContent() {
   const [selectedContact, setSelectedContact] = useState<{ id: string; name: string } | null>(null);
   const [showConversation, setShowConversation] = useState(false);
   const [showPause, setShowPause] = useState(false);
+  const [isNewPortalRequest, setIsNewPortalRequest] = useState(false);
 
   // supabase stuff : for later
   /*
@@ -57,6 +58,7 @@ function AppContent() {
 
   const handleContactSelect = (contact: { id: string; name: string }, isInvite?: boolean) => {
     setSelectedContact(contact);
+    setIsNewPortalRequest(false);
     if (isInvite) {
       // Navigate to initiate conversation (Message page) for invites
       setShowMessage(true);
@@ -81,6 +83,7 @@ function AppContent() {
     setShowReflect(false);
     setShowAcceptInvite(false);
     setSelectedContact(null);
+    setIsNewPortalRequest(false);
     setActiveTab('friends');
   };
 
@@ -239,6 +242,7 @@ const handleTabChange = (tab: 'friends' | 'home' | 'profile') => {
           !showExpectationsSection5 && !showExpectationsComplete && !showReflect && !showAcceptInvite && selectedContact && (
           <Portal 
             contact={selectedContact}
+            isNewPortalRequest={isNewPortalRequest}
             onBack={handleBackToContacts}
             onNavigateToExpectations={handleNavigateToExpectations}
             onNavigateToReflect={handleNavigateToReflect}
@@ -310,7 +314,12 @@ const handleTabChange = (tab: 'friends' | 'home' | 'profile') => {
         {activeTab === 'home' && !showOverlay && (
           <Home 
             onBack={() => {}}
-            onNext={() => {}}
+            onNext={(contact) => {
+              setSelectedContact(contact);
+              setIsNewPortalRequest(true);
+              setActiveTab('friends');
+              setShowPortal(true);
+            }}
             onSearch={(query) => console.log(query)}
           />
         )}

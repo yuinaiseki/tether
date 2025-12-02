@@ -127,11 +127,32 @@ const portalStyles = StyleSheet.create({
     height: SCREEN_HEIGHT * 0.4,
     bottom: SCREEN_HEIGHT * 0.45,
     left: SCREEN_WIDTH * 0.1,
-    zIndex: 10,
+    zIndex: 11,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  one: {
+    width: SCREEN_WIDTH * 0.2,
+    height: SCREEN_WIDTH * 0.2,
+    resizeMode: 'contain',
+    marginLeft: SCREEN_WIDTH * 0.05,
+  },
+  invite: {
+    position: 'absolute',
+    width: SCREEN_WIDTH * 0.32,
+    height: SCREEN_WIDTH * 0.32,
+    bottom: SCREEN_HEIGHT * 0.45 + (SCREEN_HEIGHT * 0.35) / 2 + (SCREEN_WIDTH * 0.2) / 2 - 10,
+    left: SCREEN_WIDTH * 0.1 + (SCREEN_WIDTH * 0.4) / 2 + SCREEN_WIDTH * 0.002 - (SCREEN_WIDTH * 0.32) / 2 - SCREEN_WIDTH * 0.02,
+    zIndex: 12,
+    resizeMode: 'contain',
   },
   spiral: {
-    width: '100%',
-    height: '100%',
+    position: 'absolute',
+    width: SCREEN_WIDTH * 0.4,
+    height: SCREEN_HEIGHT * 0.4,
+    bottom: SCREEN_HEIGHT * 0.45,
+    left: SCREEN_WIDTH * 0.1,
+    zIndex: 10,
     resizeMode: 'contain',
   },
   expectationsTouchable: {
@@ -141,10 +162,21 @@ const portalStyles = StyleSheet.create({
     bottom: SCREEN_HEIGHT * 0.32,
     left: SCREEN_WIDTH * 0.6,
     zIndex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  expectations: {
-    width: '100%',
-    height: '100%',
+  two: {
+    width: SCREEN_WIDTH * 0.2,
+    height: SCREEN_WIDTH * 0.2,
+    resizeMode: 'contain',
+  },
+  expectationsImage: {
+    position: 'absolute',
+    width: SCREEN_WIDTH * 0.32,
+    height: SCREEN_WIDTH * 0.32,
+    bottom: SCREEN_HEIGHT * 0.32 + (SCREEN_HEIGHT * 0.35) / 2 + (SCREEN_WIDTH * 0.2) / 2 - 10,
+    left: (SCREEN_WIDTH * 0.6 + (SCREEN_WIDTH * 0.4) / 2) - (SCREEN_WIDTH * 0.32) / 2 - SCREEN_WIDTH * 0.02,
+    zIndex: 12,
     resizeMode: 'contain',
   },
   reflectContainer: {
@@ -161,9 +193,19 @@ const portalStyles = StyleSheet.create({
   },
   reflectTouchable: {
   },
-  reflect: {
+  lock: {
+    width: SCREEN_WIDTH * 0.2,
+    height: SCREEN_WIDTH * 0.2,
+    resizeMode: 'contain',
   },
-  three: {
+  assurances: {
+    position: 'absolute',
+    width: SCREEN_WIDTH * 0.32,
+    height: SCREEN_WIDTH * 0.32,
+    bottom: SCREEN_HEIGHT * 0.15 + (SCREEN_HEIGHT * 0.35) / 2 + (SCREEN_WIDTH * 0.2) / 2 - 10,
+    left: (SCREEN_WIDTH * 0.1 + (SCREEN_WIDTH * 0.4) / 2) - (SCREEN_WIDTH * 0.32) / 2 - SCREEN_WIDTH * 0.02,
+    zIndex: 12,
+    resizeMode: 'contain',
   },
 
   elementcontainer: {
@@ -384,7 +426,7 @@ const portalStyles = StyleSheet.create({
   },
   portalCallButton: {
   position: 'absolute',
-  bottom: 110,
+  bottom: 80,
   left: SCREEN_WIDTH / 2 - 40,
   zIndex: 100,
 },

@@ -7,7 +7,7 @@ import { palette } from '../styles/palette';
 
 interface HomeProps {
   onBack: () => void;
-  onNext: () => void;
+  onNext: (contact: { id: string; name: string }) => void;
   onSearch: (query: string) => void;
 }
 
@@ -105,7 +105,7 @@ export const Home = ({ onBack, onNext, onSearch }: HomeProps) => {
                   <TouchableOpacity 
                     key={invite.id} 
                     style={styles.contactCard} 
-                    onPress={onNext}
+                    onPress={() => onNext(invite)}
                   >
                     <View style={styles.avatar}>
                       <Image source = {require('../assets/frogs/frog.png')}/>
