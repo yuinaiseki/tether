@@ -5,31 +5,26 @@ import {
   TextInput,
   ImageBackground, 
   TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  Pressable,
   Alert,
   ScrollView
 } from 'react-native';
 import { palette } from '../../styles/palette';
 import { ChevronLeft } from 'lucide-react-native';
-import expectationStyles from '../../styles/expectationStyles';
 
 import { createClient } from '@supabase/supabase-js'
+import portalStyles from '../../styles/portalStyles';
 
 const supabaseUrl = 'https://iyjdjalbdcstlskoildv.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5amRqYWxiZGNzdGxza29pbGR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzOTA3NTEsImV4cCI6MjA3OTk2Njc1MX0.Oh5zp-WhW8DpzXRYP4exF14cq_oscot7zJsKkzwrPK4'
 const db = createClient(supabaseUrl, supabaseKey)
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
-interface ExpectationsSection4Props {
+interface ExpectationsSection1Props {
   onBack: () => void;
   onContinue: () => void;
   onBackToPortal: () => void;
 }
 
-export const ExpectationsSection4 = ({ onBack, onContinue, onBackToPortal }: ExpectationsSection4Props) => {
+export const ExpectationsSection1 = ({ onBack, onContinue, onBackToPortal }: ExpectationsSection1Props) => {
   const [textValue, setTextValue] = useState('');
   const [savedText, setSavedText] = useState('');
   const [isEditing, setIsEditing] = useState(false);
@@ -39,7 +34,7 @@ export const ExpectationsSection4 = ({ onBack, onContinue, onBackToPortal }: Exp
       const { data, error } = await db
         .from('expectations2')
         .select('text')
-        .eq('section', 'section4')
+        .eq('section', 'section1')
         .order('created_at', { ascending: false })
         .limit(1);
       
@@ -76,7 +71,7 @@ export const ExpectationsSection4 = ({ onBack, onContinue, onBackToPortal }: Exp
         .from('expectations2')
         .insert({
           text: textValue.trim(),
-          section: 'section4',
+          section: 'section1',
         })
         .select();
       
@@ -96,56 +91,53 @@ export const ExpectationsSection4 = ({ onBack, onContinue, onBackToPortal }: Exp
       console.error('Error saving:', error);
     }
   }
-
   return (
     <ImageBackground 
       source={require("../../assets/backgrounds/background_vibrant.png")}
-      style={expectationStyles.background}
+      style={portalStyles.background}
       resizeMode='cover'
     >
-      <View style={expectationStyles.container}>
-        <TouchableOpacity onPress={onBack} style={expectationStyles.backButton}>
+      <View style={portalStyles.container}>
+        <TouchableOpacity onPress={onBack} style={portalStyles.backButton}>
           <ChevronLeft size={40} color={palette.slate} />
         </TouchableOpacity>
         
         <ScrollView 
-          style={expectationStyles.scrollView}
-          contentContainerStyle={expectationStyles.scrollContent}
+          style={portalStyles.scrollView}
+          contentContainerStyle={portalStyles.scrollContent}
           showsVerticalScrollIndicator={true}
         >
-          <View style={expectationStyles.content}>
-            <Text style={expectationStyles.sectionTitle}>Your Minimum Acceptable Outcome</Text>
+          <View style={portalStyles.content}>
+            <Text style={portalStyles.sectionTitle}>What You Can Control</Text>
             
-            <Text style={expectationStyles.description}>
-              This helps prevent catastrophizing and keeps expectations grounded.
-            </Text>
-
-            <View style={expectationStyles.bulletList}>
-              <Text style={expectationStyles.bulletPoint}>• Sharing your perspective clearly</Text>
-              <Text style={expectationStyles.bulletPoint}>• Setting a boundary</Text>
-              <Text style={expectationStyles.bulletPoint}>• Asking for time, space, or clarity</Text>
+            <View style={portalStyles.bulletList}>
+              <Text style={portalStyles.bulletPoint}>• Your tone and body language</Text>
+              <Text style={portalStyles.bulletPoint}>• Your honesty and vulnerability</Text>
+              <Text style={portalStyles.bulletPoint}>• How calmly you communicate</Text>
+              <Text style={portalStyles.bulletPoint}>• How you respond if emotions rise</Text>
+              <Text style={portalStyles.bulletPoint}>• The clarity of what you want to say</Text>
             </View>
 
-            <Text style={expectationStyles.prompt}>What's the minimum that would still make this conversation worthwhile?</Text>
+            <Text style={portalStyles.prompt}>What do you want to make sure you stay in control of during this conversation?</Text>
             
             {savedText && !isEditing ? (
               <>
                 <TextInput
-                  style={expectationStyles.savedTextBox}
+                  style={portalStyles.savedTextBox}
                   value={savedText}
                   editable={false}
                   multiline
                   numberOfLines={4}
                   textAlignVertical="top"
                 />
-                <TouchableOpacity onPress={handleEdit} style={expectationStyles.editButton}>
-                  <Text style={expectationStyles.editButtonText}>Edit</Text>
+                <TouchableOpacity onPress={handleEdit} style={portalStyles.editButton}>
+                  <Text style={portalStyles.editButtonText}>Edit</Text>
                 </TouchableOpacity>
               </>
             ) : (
               <>
                 <TextInput
-                  style={expectationStyles.textBox}
+                  style={portalStyles.textBox}
                   value={textValue}
                   onChangeText={setTextValue}
                   placeholder="Type your thoughts here..."
@@ -154,14 +146,14 @@ export const ExpectationsSection4 = ({ onBack, onContinue, onBackToPortal }: Exp
                   numberOfLines={4}
                   textAlignVertical="top"
                 />
-                <View style={expectationStyles.buttonRow}>
+                <View style={portalStyles.buttonRow}>
                   {isEditing && (
-                    <TouchableOpacity onPress={handleCancelEdit} style={expectationStyles.cancelButton}>
-                      <Text style={expectationStyles.cancelButtonText}>Cancel</Text>
+                    <TouchableOpacity onPress={handleCancelEdit} style={portalStyles.cancelButton}>
+                      <Text style={portalStyles.cancelButtonText}>Cancel</Text>
                     </TouchableOpacity>
                   )}
-                  <TouchableOpacity onPress={submitResponse} style={[expectationStyles.savebutton, isEditing && expectationStyles.saveButtonEdit]}>
-                    <Text style={expectationStyles.savebuttontext}>Save</Text>
+                  <TouchableOpacity onPress={submitResponse} style={[portalStyles.savebutton, isEditing && portalStyles.saveButtonEdit]}>
+                    <Text style={portalStyles.savebuttontext}>Save</Text>
                   </TouchableOpacity>
                 </View>
               </>
@@ -170,15 +162,15 @@ export const ExpectationsSection4 = ({ onBack, onContinue, onBackToPortal }: Exp
         </ScrollView>
       </View>
       
-      <Pressable
-        style={expectationStyles.continueButton}
+      <TouchableOpacity
+        style={portalStyles.continueButton}
         onPress={onContinue}
       >
-        <Text style={expectationStyles.continueButtonText}>Continue</Text>
-      </Pressable>
+        <Text style={portalStyles.continueButtonText}>Continue</Text>
+      </TouchableOpacity>
 
-      <TouchableOpacity onPress={onBackToPortal} style={expectationStyles.backToPortalButton}>
-        <Text style={expectationStyles.backToPortalText}>Back to Portal</Text>
+      <TouchableOpacity onPress={onBackToPortal} style={portalStyles.backToPortalButton}>
+        <Text style={portalStyles.backToPortalText}>Back to Portal</Text>
       </TouchableOpacity>
     </ImageBackground>
   );

@@ -3,18 +3,18 @@ import { View, StatusBar } from 'react-native';
 import { TetherProvider } from './context/TetherContext';
 import { Contacts } from './pages/contacts';
 import { Message } from './pages/message';
-import { Portal } from './pages/portal';
+import { Portal } from './pages/portal/portal';
 import { Home } from './pages/home';
 import { Profile } from './pages/profile';
-import { ExpectationsIntro } from './pages/expectations/expectationsIntro';
-import { ExpectationsSection1 } from './pages/expectations/expectationsSection1';
-import { ExpectationsSection2 } from './pages/expectations/expectationsSection2';
-import { ExpectationsSection3 } from './pages/expectations/expectationsSection3';
-import { ExpectationsSection4 } from './pages/expectations/expectationsSection4';
-import { ExpectationsSection5 } from './pages/expectations/expectationsSection5';
-import { ExpectationsComplete } from './pages/expectations/expectationsComplete';
-import { Reflect } from './pages/reflect';
-import { AcceptInvite } from './pages/expectations/acceptInvite';
+import { ExpectationsIntro } from './pages/portal/expectationsIntro';
+import { ExpectationsSection1 } from './pages/portal/expectationsSection1';
+import { ExpectationsSection2 } from './pages/portal/expectationsSection2';
+import { ExpectationsSection3 } from './pages/portal/expectationsSection3';
+import { ExpectationsSection4 } from './pages/portal/expectationsSection4';
+import { ExpectationsSection5 } from './pages/portal/expectationsSection5';
+import { ExpectationsComplete } from './pages/portal/expectationsComplete';
+import { Reflect } from './pages/portal/reflect';
+import { AcceptInvite } from './pages/portal/acceptInvite';
 import Welcome from './pages/onboarding/welcome';
 import Onboard1 from './pages/onboarding/onboard1';
 import Onboard2 from './pages/onboarding/onboard2';
@@ -22,6 +22,8 @@ import Onboard3 from './pages/onboarding/onboard3';
 import Title from './pages/title';
 import Signup from './pages/signup';
 import Footer from './pages/components/Footer';
+import {Pause} from './pages/pause';
+import {Conversation} from './pages/conversation';
 import styles from './styles/styles';
 import AuthGate from './pages/components/AuthGate';
 //import { supabase } from './config/supabase';
@@ -42,6 +44,8 @@ function AppContent() {
   const [showReflect, setShowReflect] = useState(false);
   const [showAcceptInvite, setShowAcceptInvite] = useState(false);
   const [selectedContact, setSelectedContact] = useState<{ id: string; name: string } | null>(null);
+  const [showConversation, setShowConversation] = useState(false);
+  const [showPause, setShowPause] = useState(false);
 
   // supabase stuff : for later
   /*
@@ -173,23 +177,44 @@ function AppContent() {
     setSelectedContact(null);
   };
 
-  const handleTabChange = (tab: 'friends' | 'home' | 'profile') => {
-    if (tab === 'friends') {
-      // Reset all state when navigating to friends tab
-      setShowMessage(false);
-      setShowPortal(false);
-      setShowExpectationsIntro(false);
-      setShowExpectationsSection1(false);
-      setShowExpectationsSection2(false);
-      setShowExpectationsSection3(false);
-      setShowExpectationsSection4(false);
-      setShowExpectationsSection5(false);
-      setShowExpectationsComplete(false);
-      setShowReflect(false);
-      setShowAcceptInvite(false);
-      setSelectedContact(null);
-    }
-    setActiveTab(tab);
+const handleTabChange = (tab: 'friends' | 'home' | 'profile') => {
+  if (tab === 'friends') {
+    setShowMessage(false);
+    setShowPortal(false);
+    setShowExpectationsIntro(false);
+    setShowExpectationsSection1(false);
+    setShowExpectationsSection2(false);
+    setShowExpectationsSection3(false);
+    setShowExpectationsSection4(false);
+    setShowExpectationsSection5(false);
+    setShowExpectationsComplete(false);
+    setShowReflect(false);
+    setShowAcceptInvite(false);
+    setShowConversation(false);
+    setShowPause(false);
+    setSelectedContact(null);
+  }
+  setActiveTab(tab);
+};
+
+  const handleStartCall = () => {
+  setShowConversation(true);
+  setShowPortal(false);
+  };
+
+  const handlePauseConversation = () => {
+    setShowPause(true);
+    setShowConversation(false);
+  };
+
+  const handleResumeConversation = () => {
+    setShowConversation(true);
+    setShowPause(false);
+  };
+
+  const handleEndCall = () => {
+    setShowConversation(false);
+    setShowPortal(true);
   };
 
   console.log(activeTab);
@@ -202,14 +227,14 @@ function AppContent() {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <View style={{ flex: showOverlay ? 1 : 9 }}>
-        {activeTab === 'friends' && !showMessage && !showPortal && !showOverlay && (
+        {activeTab === 'friends' && !showMessage && !showPortal && !showOverlay && !showConversation && !showPause && (
           <Contacts 
             onNext={handleContactSelect} 
             onBack={() => {}}
             onSearch={(query) => console.log(query)}
           />
         )}
-        {activeTab === 'friends' && showPortal && !showExpectationsIntro && !showExpectationsSection1 && 
+        {activeTab === 'friends' && !showOverlay && showPortal && !showConversation && !showPause && !showExpectationsIntro && !showExpectationsSection1 && 
           !showExpectationsSection2 && !showExpectationsSection3 && !showExpectationsSection4 && 
           !showExpectationsSection5 && !showExpectationsComplete && !showReflect && !showAcceptInvite && selectedContact && (
           <Portal 
@@ -218,6 +243,7 @@ function AppContent() {
             onNavigateToExpectations={handleNavigateToExpectations}
             onNavigateToReflect={handleNavigateToReflect}
             onNavigateToAcceptInvite={handleNavigateToAcceptInvite}
+            onStartCall={handleStartCall}
           />
         )}
         {activeTab === 'friends' && showExpectationsIntro && (
@@ -293,12 +319,24 @@ function AppContent() {
             onBack={() => setActiveTab('profile')} 
           />
         )}
-      </View>
-      {!showOverlay && (
-        <View style={{flex: 1}}>
-          <Footer activeTab={activeTab} setActiveTab={handleTabChange}/>
+        {activeTab === 'friends' && showConversation && selectedContact && (
+          <Conversation 
+            contact={selectedContact}
+            onBack={handleEndCall}
+            onPause={handlePauseConversation}
+          />
+        )}
+        {activeTab === 'friends' && showPause && selectedContact && (
+          <Pause 
+            onResume={handleResumeConversation}
+          />
+        )}
         </View>
-      )}
+        {!showOverlay && (
+          <View style={{flex: 1}}>
+            <Footer activeTab={activeTab} setActiveTab={handleTabChange}/>
+          </View>
+        )}
     </View>
   );
 }
@@ -393,6 +431,7 @@ export default function App() {
       </TetherProvider>
     );
   }
+  
 
   // Show onboard3
   /*

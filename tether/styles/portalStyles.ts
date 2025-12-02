@@ -9,7 +9,7 @@ const chosenFont = "../assets/fonts/AbhayaLibre-Bold.ttf" // or "Avenir"
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const expectationStyles = StyleSheet.create({
+const portalStyles = StyleSheet.create({
   background: {
     flex: 1,
     width: '100%',
@@ -31,7 +31,8 @@ const expectationStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 17,
+    marginTop: 35,
   },
   title: {
     fontSize: 28,
@@ -92,8 +93,104 @@ const expectationStyles = StyleSheet.create({
     fontFamily: chosenFont,
     color: palette.mediumBrown,
   },
+    frogsContainer: {
+    position: 'absolute',
+    top: SCREEN_HEIGHT * 0.1,
+    right: SCREEN_WIDTH * 0.05,
+    alignItems: 'center',
+    zIndex: 5,
+    gap: .1,
+  },
+  frogsImage: {
+    width: 150,
+    height: 65,
+    resizeMode: 'contain',
+  },
+  labelsContainer: {
+    flexDirection: 'row',
+    width: 150,
+    justifyContent: 'space-between',
+    marginTop: 8,
+    paddingHorizontal: 5,
+  },
+  userGraphicLabel: {
+    fontSize: 14,
+    fontFamily: 'Avenir',
+    color: palette.darkBrown,
+    fontWeight: '500',
+    textAlign: 'center',
+    flex: 1,
+  },
+  spiralTouchable: {
+    position: 'absolute',
+    width: SCREEN_WIDTH * 0.4,
+    height: SCREEN_HEIGHT * 0.4,
+    bottom: SCREEN_HEIGHT * 0.45,
+    left: SCREEN_WIDTH * 0.1,
+    zIndex: 10,
+  },
+  spiral: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  expectationsTouchable: {
+    position: 'absolute',
+    width: SCREEN_WIDTH * 0.4,
+    height: SCREEN_HEIGHT * 0.4,
+    bottom: SCREEN_HEIGHT * 0.32,
+    left: SCREEN_WIDTH * 0.6,
+    zIndex: 1,
+  },
+  expectations: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  reflectContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 0,
+    position: 'absolute',
+    width: SCREEN_WIDTH * 0.4,
+    height: SCREEN_HEIGHT * 0.4,
+    bottom: SCREEN_HEIGHT * 0.15,
+    left: SCREEN_WIDTH * 0.1,
+    zIndex: 1,
+  },
+  reflectTouchable: {
+  },
+  reflect: {
+  },
+  three: {
+  },
+
+  elementcontainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    gap: 30,
+    paddingTop: 5,
+  },
+  strokemap: {
+    // width: SCREEN_WIDTH * 0.4,
+    // position: 'absolute',
+    // width: SCREEN_WIDTH * 0.6,
+    // height: SCREEN_HEIGHT * 0.5,
+    // resizeMode: 'contain',
+    // alignSelf: 'center',
+    // top: SCREEN_HEIGHT * 0.2,
+    // zIndex: 1,
+  },
+  together: {
+    width: "100%",
+    height: "80%",
+  },
     message: {
     fontSize: 20,
+    fontStyle: "italic",
     fontFamily: chosenFont,
     color: palette.darkBrown,
     lineHeight: 30,
@@ -107,7 +204,7 @@ const expectationStyles = StyleSheet.create({
     transform: [{ translateX: -SCREEN_WIDTH * 0.2 }],
     backgroundColor: palette.lightBeige,
     paddingVertical: 16,
-    paddingHorizontal: 32,
+    //paddingHorizontal: 32,
     borderRadius: 30,
     flexDirection: 'row',
     alignItems: 'center',
@@ -285,8 +382,25 @@ const expectationStyles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 120,
   },
-
-
+  portalCallButton: {
+  position: 'absolute',
+  bottom: 110,
+  left: SCREEN_WIDTH / 2 - 40,
+  zIndex: 100,
+},
+portalCallButtonInner: {
+  width: 80,
+  height: 80,
+  borderRadius: 40,
+  backgroundColor: palette.slate,
+  justifyContent: 'center',
+  alignItems: 'center',
+  shadowColor: palette.shadow,
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.3,
+  shadowRadius: 8,
+  elevation: 6,
+},
 });
 
-export default expectationStyles;
+export default portalStyles;

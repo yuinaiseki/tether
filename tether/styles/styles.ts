@@ -447,6 +447,133 @@ const globalStyles = StyleSheet.create({
     fontWeight: '500',
   },
 
+  //convo
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  statusText: {
+    fontSize: 18,
+    fontFamily: '../asset/fonts/AbhayaLibre-Regular.ttf',
+    color: palette.teal,
+    marginBottom: 8,
+  },
+  timerText: {
+    fontSize: 24,
+    fontFamily: '../asset/fonts/AbhayaLibre-Regular.ttf',
+    color: palette.cream,
+    fontWeight: '600',
+    marginBottom: 20,
+  },
+  avatarsContainer: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  avatarSection: {
+    alignItems: 'center',
+    marginVertical: 15,
+  },
+  avatar_convo: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  avatarLetter: {
+    fontSize: 48,
+    color: palette.cream,
+    fontWeight: '700',
+  },
+  nameText: {
+    fontSize: 20,
+    fontFamily: '../asset/fonts/AbhayaLibre-Regular.ttf',
+    color: palette.cream,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  statusIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: palette.teal,
+  },
+  statusLabel: {
+    fontSize: 14,
+    fontFamily: '../asset/fonts/AbhayaLibre-Regular.ttf',
+    color: palette.teal,
+  },
+  dividerLine: {
+    width: 2,
+    height: 60,
+    backgroundColor: palette.cream + '40',
+  },
+  resourcesContainer: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 5,
+  },
+  resourceCard: {
+    backgroundColor: palette.cream + '80',
+    borderRadius: 16,
+    padding: 16,
+    width: windowWidth * 0.4,
+    alignItems: 'center',
+  },
+  resourceIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  resourceIconText: {
+    fontSize: 24,
+  },
+  resourceTitle: {
+    fontSize: 14,
+    fontFamily: '../asset/fonts/AbhayaLibre-Regular.ttf',
+    color: palette.slate,
+    textAlign: 'center',
+    fontWeight: '500',
+  },
+  pauseHintText: {
+    fontSize: 14,
+    fontFamily: '../asset/fonts/AbhayaLibre-Regular.ttf',
+    color: palette.cream + '80',
+    marginBottom: 24,
+  },
+  pauseButton: {
+    backgroundColor: palette.coral,
+    paddingVertical: 18,
+    paddingHorizontal: 32,
+    borderRadius: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    width: windowWidth * 0.85,
+    shadowColor: palette.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  pauseButtonText: {
+    fontSize: 18,
+    fontFamily: '../asset/fonts/AbhayaLibre-Regular.ttf',
+    color: palette.cream,
+    fontWeight: '700',
+  },
+
   // Input Fields
   input: {
     backgroundColor: palette.lightBeige,
