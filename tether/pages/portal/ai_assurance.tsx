@@ -32,7 +32,7 @@ export const AIPage = ({ onBack, onContinue, onBackToPortal }: AIPageProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
-      text: `Hi! I'm Tether AI, and I'm here to help you set clear expectations for this conversation.\n\nSetting expectations helps you:\n• Stay grounded in what you can control\n• Prepare for different outcomes\n• Communicate with clarity and intention\n• Protect your emotional well-being\n\nWhat would you like to explore about setting expectations? You can ask me about what you can control, what you can't control, your ideal outcomes, or how to prepare emotionally.`,
+      text: `Hi! I'm Tether AI, and I'm here to help you reflect on the relationship before this conversation.\n\nTaking a moment to reflect can help you:\n\n• Ground yourself in what this relationship means to you\n\n• Remember the moments that shaped your connection\n\n• Clarify what you genuinely appreciate about each other\n\n• Approach the conversation with empathy and emotional clarity`,
       isAI: true
     }
   ]);
@@ -52,7 +52,7 @@ export const AIPage = ({ onBack, onContinue, onBackToPortal }: AIPageProps) => {
       setTimeout(() => {
         const aiResponse: ChatMessage = {
           id: (Date.now() + 1).toString(),
-          text: `That's a great question about expectations! Setting clear expectations helps you approach this conversation with intention. What else would you like to explore?`,
+          text: `That's a great question about reflecting on your relationship! Taking time to reflect helps you approach this conversation with empathy and clarity. What else would you like to explore?`,
           isAI: true
         };
         setMessages(prev => [...prev, aiResponse]);
@@ -79,7 +79,7 @@ export const AIPage = ({ onBack, onContinue, onBackToPortal }: AIPageProps) => {
               <TouchableOpacity onPress={onBack} style={{ marginRight: 24 }}>
                 <ChevronLeft size={40} color={palette.slate} />
               </TouchableOpacity>
-              <Text style={[portalStyles.title, { fontSize: 36 }]}>Set Expectations</Text>
+              <Text style={[portalStyles.title, { fontSize: 36 }]}>Assurances</Text>
             </View>
 
             <ScrollView 
@@ -113,7 +113,7 @@ export const AIPage = ({ onBack, onContinue, onBackToPortal }: AIPageProps) => {
 
             <View style={[styles.inputArea, { 
               position: 'absolute',
-              bottom: 120,
+              bottom: 80,
               left: 16,
               right: 16,
               paddingBottom: 8,
@@ -124,7 +124,7 @@ export const AIPage = ({ onBack, onContinue, onBackToPortal }: AIPageProps) => {
                 style={styles.chatInput}
                 value={inputText}
                 onChangeText={setInputText}
-                placeholder="Ask about what you can control, outcomes, or emotional preparation..."
+                placeholder="Ask about reflecting on your relationship, connection, or emotional clarity..."
                 placeholderTextColor={palette.mutedBrown}
                 multiline
               />
