@@ -7,6 +7,7 @@ import { Portal } from './pages/portal/portal';
 import { Home } from './pages/home';
 import { Profile } from './pages/profile';
 import { ExpectationsIntro } from './pages/portal/expectationsIntro';
+import { AIPage } from './pages/portal/aipage';
 import { ExpectationsSection1 } from './pages/portal/expectationsSection1';
 import { ExpectationsSection2 } from './pages/portal/expectationsSection2';
 import { ExpectationsSection3 } from './pages/portal/expectationsSection3';
@@ -35,6 +36,7 @@ function AppContent() {
   const [showMessage, setShowMessage] = useState(false);
   const [showPortal, setShowPortal] = useState(false);
   const [showExpectationsIntro, setShowExpectationsIntro] = useState(false);
+  const [showAIPage, setShowAIPage] = useState(false);
   const [showExpectationsSection1, setShowExpectationsSection1] = useState(false);
   const [showExpectationsSection2, setShowExpectationsSection2] = useState(false);
   const [showExpectationsSection3, setShowExpectationsSection3] = useState(false);
@@ -49,10 +51,12 @@ function AppContent() {
   const [isNewPortalRequest, setIsNewPortalRequest] = useState(false);
   const [showCalling, setShowCalling] = useState(false);
   const [showConfirmCallModal, setShowConfirmCallModal] = useState(false);
+  const [expectationsCompleted, setExpectationsCompleted] = useState(false);
 
   const handleContactSelect = (contact: { id: string; name: string }, isInvite?: boolean) => {
     setSelectedContact(contact);
     setIsNewPortalRequest(false);
+    setExpectationsCompleted(false);
     if (isInvite) {
       setShowMessage(true);
       setShowPortal(false);
@@ -66,6 +70,7 @@ function AppContent() {
     setShowMessage(false);
     setShowPortal(false);
     setShowExpectationsIntro(false);
+    setShowAIPage(false);
     setShowExpectationsSection1(false);
     setShowExpectationsSection2(false);
     setShowExpectationsSection3(false);
@@ -79,6 +84,7 @@ function AppContent() {
     setShowPause(false);
     setShowConfirmCallModal(false);
     setSelectedContact(null);
+    setIsNewPortalRequest(false);
     setActiveTab('friends');
   };
 
@@ -87,9 +93,14 @@ function AppContent() {
     setShowPortal(false);
   };
 
+  const handleNavigateToAIPage = () => {
+    setShowAIPage(true);
+    setShowExpectationsIntro(false);
+  };
+
   const handleNavigateToSection1 = () => {
     setShowExpectationsSection1(true);
-    setShowExpectationsIntro(false);
+    setShowAIPage(false);
   };
 
   const handleNavigateToSection2 = () => {
@@ -115,6 +126,7 @@ function AppContent() {
   const handleNavigateToComplete = () => {
     setShowExpectationsComplete(true);
     setShowExpectationsSection5(false);
+    setExpectationsCompleted(true);
   };
 
   const handleNavigateToReflect = () => {
@@ -129,6 +141,7 @@ function AppContent() {
 
   const handleBackToPortal = () => {
     setShowExpectationsIntro(false);
+    setShowAIPage(false);
     setShowExpectationsSection1(false);
     setShowExpectationsSection2(false);
     setShowExpectationsSection3(false);
@@ -145,8 +158,13 @@ function AppContent() {
   };
 
   const handleBackToExpectationsIntro = () => {
-    setShowExpectationsSection1(false);
+    setShowAIPage(false);
     setShowExpectationsIntro(true);
+  };
+
+  const handleBackToAIPage = () => {
+    setShowExpectationsSection1(false);
+    setShowAIPage(true);
   };
 
   const handleBackToSection1 = () => {
@@ -223,6 +241,7 @@ function AppContent() {
       setShowMessage(false);
       setShowPortal(false);
       setShowExpectationsIntro(false);
+      setShowAIPage(false);
       setShowExpectationsSection1(false);
       setShowExpectationsSection2(false);
       setShowExpectationsSection3(false);
@@ -240,7 +259,7 @@ function AppContent() {
     setActiveTab(tab);
   };
 
-  const showOverlay = showExpectationsIntro || showExpectationsSection1 || showExpectationsSection2 || 
+  const showOverlay = showExpectationsIntro || showAIPage || showExpectationsSection1 || showExpectationsSection2 || 
     showExpectationsSection3 || showExpectationsSection4 || showExpectationsSection5 || 
     showExpectationsComplete || showReflect || showAcceptInvite;
   
@@ -263,6 +282,7 @@ function AppContent() {
             <Portal 
               contact={selectedContact}
               isNewPortalRequest={isNewPortalRequest}
+              expectationsCompleted={expectationsCompleted}
               onBack={handleBackToContacts}
               onNavigateToExpectations={handleNavigateToExpectations}
               onNavigateToReflect={handleNavigateToReflect}
@@ -307,13 +327,20 @@ function AppContent() {
         {activeTab === 'friends' && showExpectationsIntro && (
           <ExpectationsIntro 
             onBack={handleBackToPortal} 
+            onContinue={handleNavigateToAIPage}
+            onBackToPortal={handleBackToPortal}
+          />
+        )}
+        {activeTab === 'friends' && showAIPage && (
+          <AIPage 
+            onBack={handleBackToExpectationsIntro} 
             onContinue={handleNavigateToSection1}
             onBackToPortal={handleBackToPortal}
           />
         )}
         {activeTab === 'friends' && showExpectationsSection1 && (
           <ExpectationsSection1 
-            onBack={handleBackToExpectationsIntro} 
+            onBack={handleBackToAIPage} 
             onContinue={handleNavigateToSection2}
             onBackToPortal={handleBackToPortal}
           />
