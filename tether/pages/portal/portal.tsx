@@ -46,10 +46,12 @@ interface PortalProps {
   onNavigateToExpectations: () => void;
   onNavigateToReflect: () => void;
   onNavigateToAcceptInvite: () => void;
+  onNavigateToLockedStep: () => void;
+  onNavigateToAIAssurance: () => void;
   onStartCall?: () => void;
 }
 
-export const Portal = ({ contact, isNewPortalRequest = false, expectationsCompleted = false, onBack, onNavigateToExpectations, onNavigateToReflect, onNavigateToAcceptInvite, onStartCall }: PortalProps) => {
+export const Portal = ({ contact, isNewPortalRequest = false, expectationsCompleted = false, onBack, onNavigateToExpectations, onNavigateToReflect, onNavigateToAcceptInvite, onNavigateToLockedStep, onNavigateToAIAssurance, onStartCall }: PortalProps) => {
   const [hasCompletedExpectations, setHasCompletedExpectations] = useState(expectationsCompleted);
 
   useEffect(() => {
@@ -88,8 +90,8 @@ export const Portal = ({ contact, isNewPortalRequest = false, expectationsComple
     >
       <SafeAreaView style={{ flex: 1, overflow: 'visible' }}>
         <View style={styles.screen}>
-          <View style={[styles.heading, {marginBottom: 0}]}>
-            <TouchableOpacity onPress={onBack} style={styles.backButton}>
+          <View style={[styles.heading, {marginBottom: 0, zIndex: 100}]}>
+            <TouchableOpacity onPress={onBack} style={[styles.backButton, { zIndex: 100 }]}>
               <Image source={Back} style={{ width: 40, height: 40 }} resizeMode="contain" />
             </TouchableOpacity>
             {/* <Text style={styles.headingtext}>Portal with {contact.name}</Text> */}
@@ -142,7 +144,13 @@ export const Portal = ({ contact, isNewPortalRequest = false, expectationsComple
         />
       </View> */}
       <TouchableOpacity 
-        onPress={onNavigateToExpectations}
+        onPress={() => {
+          if (isNewPortalRequest) {
+            onNavigateToLockedStep();
+          } else {
+            onNavigateToExpectations();
+          }
+        }}
         style={portalStyles.expectationsTouchable}
       >
         <Image 
@@ -156,7 +164,13 @@ export const Portal = ({ contact, isNewPortalRequest = false, expectationsComple
       />
       <View style={portalStyles.reflectContainer}> 
         <TouchableOpacity 
-          onPress={onNavigateToReflect}
+          onPress={() => {
+            if (!hasCompletedExpectations) {
+              onNavigateToLockedStep();
+            } else {
+              onNavigateToAIAssurance();
+            }
+          }}
           style={portalStyles.reflectTouchable}
         > 
           <Image 

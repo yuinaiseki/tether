@@ -4,16 +4,21 @@ import {
   Text, 
   ImageBackground, 
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { palette } from '../../styles/palette';
 import { ChevronLeft } from 'lucide-react-native';
 import portalStyles from '../../styles/portalStyles';
 
+const spiral = require('../../assets/portal/spiral_res.png');
+
 interface AcceptInviteProps {
+  contact: { id: string; name: string };
   onBack: () => void;
+  onNavigateToExpectations: () => void;
 }
 
-export const AcceptInvite = ({ onBack }: AcceptInviteProps) => {
+export const AcceptInvite = ({ contact, onBack, onNavigateToExpectations }: AcceptInviteProps) => {
   return (
     <ImageBackground 
       source={require("../../assets/backgrounds/light_ombre.png")}
@@ -25,8 +30,30 @@ export const AcceptInvite = ({ onBack }: AcceptInviteProps) => {
           <ChevronLeft size={40} color={palette.slate} />
         </TouchableOpacity>
         
-        <View style={portalStyles.content}>
-          <Text style={portalStyles.title}>Accept Invite</Text>
+        <View style={[portalStyles.content, { paddingTop: 80, justifyContent: 'center', flex: 1, alignItems: 'center' }]}>
+          <Text style={[portalStyles.title, { fontFamily: 'Avenir', textAlign: 'center' }]}>
+            {contact.name} accepted invite! Continue to setting expectations
+          </Text>
+          <TouchableOpacity
+            style={[portalStyles.continueButton, { marginTop: 8, alignSelf: 'center', position: 'relative', bottom: 'auto', right: 'auto', width: 'auto', minWidth: 200 }]}
+            onPress={onNavigateToExpectations}
+          >
+            <Text style={[portalStyles.continueButtonText, { fontFamily: 'Avenir' }]}>
+              Continue
+            </Text>
+          </TouchableOpacity>
+        </View>
+        
+        <View style={{ alignItems: 'center', marginBottom: 40 }}>
+          <TouchableOpacity onPress={onBack} style={{ alignItems: 'center' }}>
+            <Image 
+              source={spiral} 
+              style={{ width: 100, height: 100, resizeMode: 'contain' }}
+            />
+            <Text style={[portalStyles.backToPortalText, { fontFamily: 'Avenir', marginTop: 8 }]}>
+              Back to Portal
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>

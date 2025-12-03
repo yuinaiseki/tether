@@ -9,12 +9,11 @@ import { palette } from '../../styles/palette';
 import { ChevronLeft } from 'lucide-react-native';
 import portalStyles from '../../styles/portalStyles';
 
-interface ExpectationsCompleteProps {
+interface LockedStepProps {
   onBack: () => void;
-  onBackToPortal: () => void;
 }
 
-export const ExpectationsComplete = ({ onBack, onBackToPortal }: ExpectationsCompleteProps) => {
+export const LockedStep = ({ onBack }: LockedStepProps) => {
   return (
     <ImageBackground 
       source={require("../../assets/backgrounds/background_vibrant.png")}
@@ -27,22 +26,15 @@ export const ExpectationsComplete = ({ onBack, onBackToPortal }: ExpectationsCom
         </TouchableOpacity>
         
         <View style={[portalStyles.content, { paddingTop: 80 }]}>
-          <Text style={[portalStyles.title, { fontFamily: 'Avenir' }]}>Complete!</Text>
-          <Text style={[portalStyles.message, { fontFamily: 'Avenir' }]}>
-            Congrats, you've set your expectations!
+          <Text style={[portalStyles.title, { fontFamily: 'Avenir' }]}>
+            LOCKED
           </Text>
-          <Text style={[portalStyles.message, { fontFamily: 'Avenir' }]}>
-            You're ready to have this conversation with clarity and intention.
+          <Text style={[portalStyles.message, { fontFamily: 'Avenir', marginTop: 24 }]}>
+            Please ensure the preceding step is fully completed before continuing.
           </Text>
         </View>
       </View>
-
-      <TouchableOpacity
-        style={portalStyles.backToPortalButtonMain}
-        onPress={onBackToPortal}
-      >
-        <Text style={[portalStyles.backToPortalButtonText, { fontFamily: 'Avenir' }]}>Back to Portal</Text>
-      </TouchableOpacity>
     </ImageBackground>
   );
 };
+
