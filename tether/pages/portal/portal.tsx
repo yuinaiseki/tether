@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -11,8 +11,13 @@ import {
 } from 'react-native';
 import styles from '../../styles/styles';
 import { palette } from '../../styles/palette';
-import { ChevronLeft, Phone } from 'lucide-react-native';
+import { Phone } from 'lucide-react-native';
 import portalStyles from '../../styles/portalStyles';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://iyjdjalbdcstlskoildv.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5amRqYWxiZGNzdGxza29pbGR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzOTA3NTEsImV4cCI6MjA3OTk2Njc1MX0.Oh5zp-WhW8DpzXRYP4exF14cq_oscot7zJsKkzwrPK4'
+const db = createClient(supabaseUrl, supabaseKey)
 
 const Back = require('../../assets/portal/Back.png');
 const strokemap = require('../../assets/portal/strokemap.png');
@@ -20,7 +25,6 @@ const strokemap = require('../../assets/portal/strokemap.png');
 const together = require('../../assets/portal/together.png');
 const expectationsnum= require('../../assets/portal/expectation#image.png');
 const reflect = require('../../assets/portal/reflect_icon.png');
-const three = require('../../assets/portal/three_circle.png');
 
 const one = require('../../assets/portal/one.png');
 const spiral = require('../../assets/portal/spiral_res.png');
@@ -29,6 +33,7 @@ const two = require('../../assets/portal/two.png');
 const expectations = require('../../assets/portal/expectations_.png');
 const lock = require('../../assets/portal/graylock.png');
 const assurances = require('../../assets/portal/assurances.png');
+const three = require('../../assets/portal/3.png');
 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -36,6 +41,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 interface PortalProps {
   contact: { id: string; name: string };
   isNewPortalRequest?: boolean;
+  expectationsCompleted?: boolean;
   onBack: () => void;
   onNavigateToExpectations: () => void;
   onNavigateToReflect: () => void;
@@ -43,7 +49,36 @@ interface PortalProps {
   onStartCall?: () => void;
 }
 
-export const Portal = ({ contact, isNewPortalRequest = false, onBack, onNavigateToExpectations, onNavigateToReflect, onNavigateToAcceptInvite, onStartCall }: PortalProps) => {
+export const Portal = ({ contact, isNewPortalRequest = false, expectationsCompleted = false, onBack, onNavigateToExpectations, onNavigateToReflect, onNavigateToAcceptInvite, onStartCall }: PortalProps) => {
+  const [hasCompletedExpectations, setHasCompletedExpectations] = useState(expectationsCompleted);
+
+  useEffect(() => {
+    // Check database to see if all 5 sections are completed
+    const checkExpectationsCompletion = async () => {
+      try {
+        const sections = ['section1', 'section2', 'section3', 'section4', 'section5'];
+        const promises = sections.map(section =>
+          db
+            .from('expectations2')
+            .select('id')
+            .eq('section', section)
+            .order('created_at', { ascending: false })
+            .limit(1)
+        );
+        
+        const results = await Promise.all(promises);
+        const allCompleted = results.every(result => result.data && result.data.length > 0);
+        setHasCompletedExpectations(allCompleted || expectationsCompleted);
+      } catch (error) {
+        console.error('Error checking expectations completion:', error);
+        // Fall back to prop value if database check fails
+        setHasCompletedExpectations(expectationsCompleted);
+      }
+    };
+
+    checkExpectationsCompletion();
+  }, [expectationsCompleted]);
+
   return (
     <ImageBackground 
       source={require("../../assets/backgrounds/background_vibrant.png")}
@@ -55,7 +90,7 @@ export const Portal = ({ contact, isNewPortalRequest = false, onBack, onNavigate
         <View style={styles.screen}>
           <View style={[styles.heading, {marginBottom: 0}]}>
             <TouchableOpacity onPress={onBack} style={styles.backButton}>
-              <ChevronLeft size={40} color={palette.slate} />
+              <Image source={Back} style={{ width: 40, height: 40 }} resizeMode="contain" />
             </TouchableOpacity>
             {/* <Text style={styles.headingtext}>Portal with {contact.name}</Text> */}
           </View>
@@ -125,7 +160,7 @@ export const Portal = ({ contact, isNewPortalRequest = false, onBack, onNavigate
           style={portalStyles.reflectTouchable}
         > 
           <Image 
-            source={lock} 
+            source={hasCompletedExpectations ? three : lock} 
             style={portalStyles.lock} 
           />
         </TouchableOpacity>
