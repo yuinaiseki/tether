@@ -26,10 +26,10 @@ export const LockedStep = ({ onBack }: LockedStepProps) => {
         </TouchableOpacity>
         
         <View style={[portalStyles.content, { paddingTop: 80 }]}>
-          <Text style={[portalStyles.title, { fontFamily: 'Avenir' }]}>
+          <Text style={[portalStyles.title,]}>
             LOCKED
           </Text>
-          <Text style={[portalStyles.message, { fontFamily: 'Avenir', marginTop: 24 }]}>
+          <Text style={[portalStyles.message, { marginTop: 24 }]}>
             Please ensure the preceding step is fully completed before continuing.
           </Text>
         </View>
