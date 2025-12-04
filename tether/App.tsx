@@ -473,6 +473,7 @@ function AppContent() {
         {activeTab === 'profile' && !showOverlay && (
           <Profile 
             onBack={() => setActiveTab('profile')} 
+            onProfileUpdate={(profile) => setUserProfile(profile)}
           />
         )}
       </View>

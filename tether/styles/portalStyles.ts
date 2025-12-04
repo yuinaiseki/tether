@@ -114,9 +114,9 @@ const portalStyles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   userGraphicLabel: {
-    fontSize: 14,
-    fontFamily: 'Avenir',
-    color: palette.darkBrown,
+    fontSize: 15,
+    fontFamily: chosenFont,
+    color: palette.mediumBrown,
     fontWeight: '500',
     textAlign: 'center',
     flex: 1,

@@ -112,18 +112,18 @@ export const Portal = ({ contact, userColor, isNewPortalRequest = false, expecta
           <View style={portalStyles.singleFrog}>
             <Image 
               source={require('../../assets/frogs/cute_frog_body.png')}
-              style={[portalStyles.frogBody]}
+              style={[portalStyles.frogBody, {height: 37}, {transform: [{ translateY: 6}, {translateX: 9}, { scaleX: -1 }]}]}
               resizeMode="contain"
               tintColor={userColor} 
             />
             <Image 
               source={require('../../assets/frogs/cute_frog_outline.png')}
-              style={[portalStyles.frogBody, { position: 'absolute' }]}
+              style={[portalStyles.frogBody, { position: 'absolute', height: 46, }, {transform: [{ translateY: 6}, {translateX: 9}, { scaleX: -1 }]}]}
               resizeMode="contain"
             />
             <Image 
               source={require('../../assets/frogs/cute_frog_cheeks.png')}
-              style={[portalStyles.frogBody, { position: 'absolute' }]}
+              style={[portalStyles.frogBody, { position: 'absolute', height: 44,}, {transform: [{ translateY: 4}, {translateX: 3}, { scaleX: -1 }]}]}
             />
           </View>
 
@@ -131,18 +131,18 @@ export const Portal = ({ contact, userColor, isNewPortalRequest = false, expecta
           <View style={portalStyles.singleFrog}>
             <Image 
               source={require('../../assets/frogs/cute_frog_body.png')}
-              style={[portalStyles.frogBody]}
+              style={[portalStyles.frogBody,  {height: 37}, {transform: [{ translateY: 6}, {translateX: -5}]}]}
               resizeMode="contain"
               tintColor={contact.color || palette.sage}
             />
             <Image 
               source={require('../../assets/frogs/cute_frog_outline.png')}
-              style={[portalStyles.frogBody, { position: 'absolute' }]}
+              style={[portalStyles.frogBody, { position: 'absolute', height: 46, }, {transform: [{ translateY: 6}, {translateX: -5}]}]}
               resizeMode="contain"
             />
             <Image 
               source={require('../../assets/frogs/cute_frog_cheeks.png')}
-              style={[portalStyles.frogBody, { position: 'absolute' }]}
+              style={[portalStyles.frogBody, { position: 'absolute', height: 44,}, {transform: [{ translateY: 4}, {translateX: 0}]}]}
             />
           </View>
         </View>

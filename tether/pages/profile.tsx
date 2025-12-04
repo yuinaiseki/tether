@@ -34,6 +34,7 @@ interface UserProfile {
 
 interface ProfileProps {
   onBack: () => void;
+  onProfileUpdate?: (profile: UserProfile) => void;
 }
 
 const ICON_COLORS = [
@@ -45,8 +46,7 @@ const ICON_COLORS = [
   { name: 'Medium Brown', color: palette.mediumBrown },
 ];
 
-
-export const Profile = ({ onBack }: ProfileProps) => {
+export const Profile = ({ onBack, onProfileUpdate }: ProfileProps) => {
   const { signOut, session } = useSession();
   const [loggingOut, setLoggingOut] = useState(false);
   const [profile, setProfile] = useState<UserProfile>({
@@ -70,6 +70,7 @@ export const Profile = ({ onBack }: ProfileProps) => {
     loadProfile();
   }, []);
 
+  
   // Animate edit modal
   useEffect(() => {
     if (editModalVisible) {
@@ -123,6 +124,9 @@ export const Profile = ({ onBack }: ProfileProps) => {
     try {
       await AsyncStorage.setItem(PROFILE_KEY, JSON.stringify(newProfile));
       setProfile(newProfile);
+      if (onProfileUpdate) {
+        onProfileUpdate(newProfile);
+      }
     } catch (error) {
       console.error('Error saving profile:', error);
     }
