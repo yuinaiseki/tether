@@ -10,14 +10,16 @@ import {
   Dimensions,
   StyleSheet,
   Animated,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../../styles/styles';
 import { palette } from '../../styles/palette';
-import { ChevronDown, ChevronLeft, ChevronUp, Phone, X, Check } from 'lucide-react-native';
+import { ChevronDown, ChevronLeft, ChevronUp, Phone, X, Check, RotateCcw } from 'lucide-react-native';
 import portalStyles from '../../styles/portalStyles';
 import { createClient } from '@supabase/supabase-js';
 import { Reflect } from './reflect';
+import { resetPortalProgress } from '../../utils/portalProgress';
 
 // Import the review modal
 import { ExpectationsReviewModal } from './ExpectationsReviewModal';
@@ -94,6 +96,7 @@ export const Portal = ({
   const [isInLowerHalf, setIsInLowerHalf] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
 
   // Load progress from AsyncStorage
   useEffect(() => {
@@ -203,6 +206,24 @@ export const Portal = ({
     setShowReflect(true);
   };
 
+  // Handle reset confirmation
+  const handleResetProgress = async () => {
+    try {
+      await resetPortalProgress(contact.id);
+      setProgress({
+        inviteAccepted: false,
+        expectationsCompleted: false,
+        assurancesCompleted: false,
+        reflectCompleted: false,
+      });
+      setShowResetModal(false);
+      setIsInLowerHalf(false);
+      scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+    } catch (error) {
+      console.error('Error resetting portal progress:', error);
+    }
+  };
+
   // Render checkmark or number
   const renderStepIcon = (stepCompleted: boolean, numberImage: any, size: number = 0.18) => {
     if (stepCompleted) {
@@ -265,6 +286,17 @@ export const Portal = ({
                 <ChevronLeft size={40} color={palette.slate} />
               </TouchableOpacity>
               <Text style={styles.headingtext}>Portal with {contact.name}</Text>
+              <TouchableOpacity 
+                onPress={() => setShowResetModal(true)} 
+                style={{
+                  position: 'absolute',
+                  right: 8,
+                  bottom: -6,
+                  zIndex: 2,
+                }}
+              >
+                <RotateCcw size={32} color={palette.slate} />
+              </TouchableOpacity>
           </View>
 
           <ScrollView 
@@ -561,6 +593,7 @@ export const Portal = ({
         </>
       )}
       
+      {/* Complete Modal */}
       {showCompleteModal && (
         <View
           style={{
@@ -631,6 +664,133 @@ export const Portal = ({
             >
               Great work on your conversation
             </Text>
+          </View>
+        </View>
+      )}
+
+      {/* Reset Confirmation Modal */}
+      {showResetModal && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 2000,
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: palette.cream,
+              borderRadius: 20,
+              padding: 32,
+              alignItems: 'center',
+              width: SCREEN_WIDTH * 0.85,
+              shadowColor: palette.shadow,
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+              shadowRadius: 12,
+              elevation: 8,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => setShowResetModal(false)}
+              style={{
+                position: 'absolute',
+                top: 16,
+                right: 16,
+                zIndex: 10,
+              }}
+            >
+              <X size={28} color={palette.slate} />
+            </TouchableOpacity>
+            
+            <RotateCcw size={48} color={palette.slate} style={{ marginBottom: 16 }} />
+            
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: palette.slate,
+                marginBottom: 12,
+                textAlign: 'center',
+                fontFamily: "../../assets/fonts/AbhayaLibre-Bold.ttf"
+              }}
+            >
+              Reset Portal Progress?
+            </Text>
+            
+            <Text
+              style={{
+                fontSize: 16,
+                color: palette.darkBrown,
+                textAlign: 'center',
+                marginBottom: 24,
+                lineHeight: 24,
+                fontFamily: "../../assets/fonts/AbhayaLibre-Regular.ttf",
+              }}
+            >
+              This will reset all progress for this portal, including completed steps. This action cannot be undone.
+            </Text>
+
+            <View style={{ flexDirection: 'row', gap: 12, width: '100%' }}>
+              <TouchableOpacity
+                onPress={() => setShowResetModal(false)}
+                style={{
+                  flex: 1,
+                  backgroundColor: 'transparent',
+                  paddingVertical: 14,
+                  paddingHorizontal: 24,
+                  borderRadius: 30,
+                  alignItems: 'center',
+                  borderWidth: 2,
+                  borderColor: palette.slate,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: '600',
+                    color: palette.slate,
+                    fontFamily: "../../assets/fonts/AbhayaLibre-Bold.ttf"
+                  }}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={handleResetProgress}
+                style={{
+                  flex: 1,
+                  backgroundColor: palette.slate,
+                  paddingVertical: 14,
+                  paddingHorizontal: 24,
+                  borderRadius: 30,
+                  alignItems: 'center',
+                  shadowColor: palette.shadow,
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 8,
+                  elevation: 4,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: '600',
+                    color: palette.cream,
+                    fontFamily: "../../assets/fonts/AbhayaLibre-Bold.ttf"
+                  }}
+                >
+                  Reset
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       )}
