@@ -18,10 +18,11 @@ import { ResourceModal, ResourceType } from './components/Resources';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface PauseProps {
+  contact: { id: string; name: string };
   onResume: () => void;
 }
 
-export const Pause = ({ onResume }: PauseProps) => {
+export const Pause = ({ contact, onResume }: PauseProps) => {
   const [timeRemaining, setTimeRemaining] = useState(300);
   const breatheScale = useRef(new Animated.Value(1)).current;
   const breatheOpacity = useRef(new Animated.Value(0.6)).current;
@@ -162,7 +163,7 @@ export const Pause = ({ onResume }: PauseProps) => {
             </TouchableOpacity>
 
             <TouchableOpacity style={resourceStyles.resourceCard}
-            onPress={() => handleResourcePress('conversation-starters')}>
+            onPress={() => handleResourcePress('revisit-expectations')}>
                 <View style={[resourceStyles.resourceIcon, { backgroundColor: palette.lightBrown }]}>
                 <MessageCircleHeart size={33} color={palette.cream}/>
                 </View>
@@ -215,10 +216,14 @@ export const Pause = ({ onResume }: PauseProps) => {
         </TouchableOpacity>
       </View>
       <ResourceModal
-                visible={modalVisible}
-                onClose={() => setModalVisible(false)}
-                resourceType={selectedResource}
-              />
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        resourceType={selectedResource}
+        contactName={contact.name}
+        userExpectations={['Listen without interrupting', 'Stay calm and respectful']} //change
+        contactExpectations={['Be honest about feelings', 'Take breaks when needed']}
+      />
+      
     </ImageBackground>
   );
 };

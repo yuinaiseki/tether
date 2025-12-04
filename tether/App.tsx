@@ -341,7 +341,8 @@ function AppContent() {
         {/* Pause Page */}
         {activeTab === 'friends' && showPause && selectedContact && (
           <Pause 
-            onResume={handleResumeConversation}
+           contact={selectedContact}
+            onResume={handleResumeConversation}          
           />
         )}
 

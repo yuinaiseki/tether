@@ -4,24 +4,24 @@ import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, TextInput, Imag
 import styles from '../styles/styles';
 import { Search, ChevronDown, ChevronRight } from 'lucide-react-native';
 import theme from '../styles/theme';
+import { palette } from '../styles/palette';
 
 interface ContactsProps {
-  onNext: (contact: { id: string; name: string }, isInvite?: boolean) => void;
+  onNext: (contact: { id: string; name: string, color: any }, isInvite?: boolean) => void;
   onBack: () => void;
   onSearch: (query: string) => void;
 }
 
 export const Contacts = ({ onNext, onBack, onSearch }: ContactsProps) => {
   const contacts = [
-    { id: '1', name: 'Zafar'},
-    { id: '2', name: 'Yuina'},
-    { id: '3', name: 'Zimin'},
-    { id: '4', name: 'Fayez'},
+    { id: '1', name: 'Zafar', color: palette.beige},
+    { id: '2', name: 'Yuina', color: palette.sage},
+    { id: '3', name: 'Zimin', color: palette.slate},
   ];
 
   const invites = [
-    { id: '1', name: 'James' },
-    { id: '2', name: 'Charlotte' },
+    { id: '1', name: 'James', color: palette.lightBrown},
+    { id: '2', name: 'Charlotte', color: palette.teal},
   ];
   const [input, setInput] = useState<string>("");
   const [showFriends, setShowFriends] = useState(true);
@@ -79,7 +79,21 @@ export const Contacts = ({ onNext, onBack, onSearch }: ContactsProps) => {
                     onPress={() => onNext(friend, false)} 
                   >
                     <View style={styles.avatar}>
-                      <Image source = {require('../assets/frogs/frog.png')}/>
+                      <Image 
+                        source={require('../assets/frogs/cute_frog_body.png')}
+                        style={[styles.profileAvatarImage, {height: 37}, {transform: [{ translateY: 6}, {translateX: -5}]}]}
+                        resizeMode="contain"
+                        tintColor={friend.color}
+                      />
+                      <Image 
+                        source={require('../assets/frogs/cute_frog_outline.png')}
+                        style={[styles.profileAvatarImage, { position: 'absolute', height: 46, }, {transform: [{ translateY: 6}, {translateX: -5}]}]}
+                        resizeMode="contain"
+                      />
+                      <Image 
+                        source={require('../assets/frogs/cute_frog_cheeks.png')}
+                        style={[styles.profileAvatarImage, { position: 'absolute', height: 44,}, {transform: [{ translateY: 4}, {translateX: -3}]}]}
+                      />
                     </View>
                     <Text style={styles.text}>{friend.name}</Text>
                   </TouchableOpacity>
@@ -108,7 +122,21 @@ export const Contacts = ({ onNext, onBack, onSearch }: ContactsProps) => {
                     onPress={() => onNext(invite, true)}
                   >
                     <View style={styles.avatar}>
-                      <Image source = {require('../assets/frogs/frog.png')}/>
+                      <Image 
+                        source={require('../assets/frogs/cute_frog_body.png')}
+                        style={[styles.profileAvatarImage, {height: 37}, {transform: [{ translateY: 6}, {translateX: -5}]}]}
+                        resizeMode="contain"
+                        tintColor={invite.color}
+                      />
+                      <Image 
+                        source={require('../assets/frogs/cute_frog_outline.png')}
+                        style={[styles.profileAvatarImage, { position: 'absolute', height: 46, }, {transform: [{ translateY: 6}, {translateX: -5}]}]}
+                        resizeMode="contain"
+                      />
+                      <Image 
+                        source={require('../assets/frogs/cute_frog_cheeks.png')}
+                        style={[styles.profileAvatarImage, { position: 'absolute', height: 44,}, {transform: [{ translateY: 4}, {translateX: -3}]}]}
+                      />
                     </View>
                     <Text style={styles.text}>{invite.name}</Text>
                   </TouchableOpacity>

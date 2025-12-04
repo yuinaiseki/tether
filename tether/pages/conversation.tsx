@@ -19,7 +19,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 interface ConversationProps {
   contact: { id: string; name: string };
   onBack: () => void;
-  onPause: () => void;
+  onPause: (contact: { id: string; name: string }) => void;
 }
 
 export const Conversation = ({ contact, onBack, onPause }: ConversationProps) => {
@@ -94,7 +94,7 @@ export const Conversation = ({ contact, onBack, onPause }: ConversationProps) =>
           </TouchableOpacity>
 
           <TouchableOpacity style={resourceStyles.resourceCard}
-          onPress={() => handleResourcePress('conversation-starters')}>
+          onPress={() => handleResourcePress('revisit-expectations')}>
             <View style={[resourceStyles.resourceIcon, { backgroundColor: palette.lightBrown }]}>
               <MessageCircleHeart size={33} color={palette.cream}/>
             </View>
@@ -106,17 +106,20 @@ export const Conversation = ({ contact, onBack, onPause }: ConversationProps) =>
 
         <TouchableOpacity 
           style={convoStyles.pauseButton}
-          onPress={onPause}
+          onPress={() => onPause(contact)}
         >
           <Pause size={24} color={palette.cream} fill={palette.cream} />
           <Text style={convoStyles.pauseButtonText}>PAUSE & BREATHE</Text>
         </TouchableOpacity>
       </View>
       <ResourceModal
-                visible={modalVisible}
-                onClose={() => setModalVisible(false)}
-                resourceType={selectedResource}
-              />
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        resourceType={selectedResource}
+        contactName={contact.name}
+        userExpectations={['Listen without interrupting', 'Stay calm and respectful']} //change
+        contactExpectations={['Be honest about feelings', 'Take breaks when needed']}
+      />
     </ImageBackground>
   );
 };
