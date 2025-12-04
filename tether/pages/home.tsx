@@ -140,7 +140,7 @@ export const Home = ({ onBack, onNext, onSearch }: HomeProps) => {
   };
 
   const handleAddPortal = () => {
-    console.log('Add new portal');
+    onBack();
   };
 
   const spin = rotateAnim.interpolate({

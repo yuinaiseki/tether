@@ -459,7 +459,7 @@ function AppContent() {
         {/* Home Page */}
         {activeTab === 'home' && !showOverlay && (
           <Home 
-            onBack={() => {}}
+            onBack={() => setActiveTab('friends')}
             onNext={(contact) => {
               setSelectedContact(contact);
               setIsNewPortalRequest(true);
