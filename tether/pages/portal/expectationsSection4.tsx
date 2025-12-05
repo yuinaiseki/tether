@@ -5,7 +5,6 @@ import {
   TextInput,
   ImageBackground, 
   TouchableOpacity,
-  TouchableWithoutFeedback,
   Alert,
   ScrollView
 } from 'react-native';
@@ -126,17 +125,14 @@ export const ExpectationsSection4 = ({ onBack, onContinue, onBackToPortal }: Exp
             
             {savedText && !isEditing ? (
               <>
-                <TouchableWithoutFeedback onPress={handleEdit}>
-                  <TextInput
-                    style={[portalStyles.savedTextBox,]}
-                    value={savedText}
-                    editable={false}
-                    multiline
-                    numberOfLines={4}
-                    textAlignVertical="top"
-                    pointerEvents="none"
-                  />
-                </TouchableWithoutFeedback>
+                <TextInput
+                  style={[portalStyles.savedTextBox,]}
+                  value={savedText}
+                  editable={false}
+                  multiline
+                  numberOfLines={4}
+                  textAlignVertical="top"
+                />
                 <TouchableOpacity onPress={handleEdit} style={portalStyles.editButton}>
                   <Text style={[portalStyles.editButtonText,]}>Edit</Text>
                 </TouchableOpacity>
