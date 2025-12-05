@@ -44,7 +44,7 @@ const three = require('../../assets/portal/3.png');
 const four = require('../../assets/portal/four.png');
 const reflectwhite = require('../../assets/portal/reflectwhite.png');
 const down = require('../../assets/portal/down.png');
-const maptwo = require('../../assets/portal/maptwo.png');
+const newbottom = require('../../assets/portal/newbottom.png');
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -325,12 +325,13 @@ export const Portal = ({
                 }}
               />
               <Image
-                source={maptwo}
+                source={newbottom}
                 style={{
-                  width: SCREEN_WIDTH * 0.6,
-                  height: SCREEN_HEIGHT * 0.4,
+                  width: SCREEN_WIDTH * 0.4,
+                  height: SCREEN_HEIGHT * 0.3,
                   resizeMode: 'contain',
                   marginTop: -150,
+                  left: -20,
                 }}
               />
             </View>
