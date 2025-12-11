@@ -329,3 +329,236 @@ AI:`;
   throw new Error("Unable to connect to Gemini API. No models available.");
 }
 
+/**
+ * Gets an AI response for assurances conversations (pre-conversation preparation)
+ * @param userMessage - The user's message/question
+ * @param contactName - The name of the person they're preparing to talk to
+ * @param conversationHistory - Previous messages in the conversation (optional)
+ * @returns The AI response text
+ */
+export async function getAssurancesAIResponse(
+  userMessage: string,
+  contactName: string,
+  conversationHistory: Array<{ text: string; isAI: boolean }> = []
+): Promise<string> {
+  if (!API_KEY) {
+    throw new Error('Gemini API key is not configured. Please set EXPO_PUBLIC_GEMINI_API_KEY environment variable.');
+  }
+
+  // Build conversation context
+  let conversationContext = '';
+  if (conversationHistory.length > 0) {
+    conversationContext = '\n\nPrevious conversation:\n';
+    conversationHistory.forEach((msg) => {
+      conversationContext += `${msg.isAI ? 'AI' : 'User'}: ${msg.text}\n`;
+    });
+  }
+
+  const prompt = `You are Tether AI, a helpful assistant that helps people prepare emotionally for difficult conversations with friends and loved ones.
+
+Your role is to help users prepare for their upcoming conversation with ${contactName} by:
+• Helping them feel more confident and emotionally centered
+• Clarifying what they want to express and why it matters
+• Approaching the conversation with calm and empathy
+• Remembering what they value about this relationship
+
+${conversationContext}User: ${userMessage}
+
+AI:`;
+
+  // First, try to list available models
+  let availableModels: string[] = [];
+  try {
+    const listUrl = `${GEMINI_API_BASE}/models?key=${API_KEY}`;
+    const listResponse: AxiosResponse<{ models?: Array<{ name?: string }> }> = await axios.get(listUrl);
+    availableModels = (listResponse.data.models || [])
+      .map(model => {
+        const fullName = model.name || "";
+        return fullName.split("/").pop() || "";
+      })
+      .filter(name => name && name.includes("gemini") && name.includes("generateContent") === false);
+    console.log("[REST] Available Gemini models for assurances:", availableModels);
+  } catch (listError) {
+    console.log("[REST] Could not list models, using defaults", listError);
+  }
+
+  const defaultModels = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
+  const modelNames = availableModels.length > 0 ? availableModels : defaultModels;
+  let lastError: Error | null = null;
+
+  for (const modelName of modelNames) {
+    try {
+      const url = `${GEMINI_API_BASE}/models/${modelName}:generateContent?key=${API_KEY}`;
+      
+      console.log(`[REST] Attempting to call ${modelName} for assurances...`);
+      
+      const requestBody = {
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }]
+      };
+
+      const response: AxiosResponse<{
+        candidates?: Array<{
+          content?: {
+            parts?: Array<{
+              text?: string;
+            }>;
+          };
+        }>;
+      }> = await axios.post(url, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const text = response.data.candidates?.[0]?.content?.parts?.[0]?.text;
+      
+      if (!text) {
+        throw new Error("No response text from Gemini API");
+      }
+
+      console.log(`[REST] Successfully generated assurances response using ${modelName}`);
+      return text.trim();
+    } catch (modelError) {
+      if (axios.isAxiosError(modelError)) {
+        const errorMsg = modelError.response?.data?.error?.message || modelError.message;
+        lastError = new Error(errorMsg);
+        console.log(`[REST] Model ${modelName} failed for assurances, trying next...`, errorMsg);
+      } else {
+        lastError = modelError instanceof Error ? modelError : new Error(String(modelError));
+        console.log(`[REST] Model ${modelName} failed for assurances, trying next...`, lastError.message);
+      }
+      continue;
+    }
+  }
+
+  if (lastError) {
+    throw new Error(
+      `Failed to connect to Gemini API with any available model. Last error: ${lastError.message}. ` +
+      `Please check your API key and ensure it has access to Gemini models.`
+    );
+  }
+
+  throw new Error("Unable to connect to Gemini API. No models available.");
+}
+
+/**
+ * Gets an AI response for reflection conversations (post-conversation processing)
+ * @param userMessage - The user's message/question
+ * @param contactName - The name of the person they had the conversation with
+ * @param conversationHistory - Previous messages in the conversation (optional)
+ * @returns The AI response text
+ */
+export async function getReflectionAIResponse(
+  userMessage: string,
+  contactName: string,
+  conversationHistory: Array<{ text: string; isAI: boolean }> = []
+): Promise<string> {
+  if (!API_KEY) {
+    throw new Error('Gemini API key is not configured. Please set EXPO_PUBLIC_GEMINI_API_KEY environment variable.');
+  }
+
+  // Build conversation context
+  let conversationContext = '';
+  if (conversationHistory.length > 0) {
+    conversationContext = '\n\nPrevious conversation:\n';
+    conversationHistory.forEach((msg) => {
+      conversationContext += `${msg.isAI ? 'AI' : 'User'}: ${msg.text}\n`;
+    });
+  }
+
+  const prompt = `You are Tether AI, a helpful assistant that helps people reflect after difficult conversations with friends and loved ones.
+
+Your role is to help users process their conversation with ${contactName} by:
+• Processing what was shared and how they're feeling
+• Recognizing growth moments and insights gained
+• Appreciating the courage it took to have this conversation
+• Considering next steps in their relationship
+
+Be empathetic, validating, and supportive. Help them process their emotions and find meaning in the experience.
+
+${conversationContext}User: ${userMessage}
+
+AI:`;
+
+  // First, try to list available models
+  let availableModels: string[] = [];
+  try {
+    const listUrl = `${GEMINI_API_BASE}/models?key=${API_KEY}`;
+    const listResponse: AxiosResponse<{ models?: Array<{ name?: string }> }> = await axios.get(listUrl);
+    availableModels = (listResponse.data.models || [])
+      .map(model => {
+        const fullName = model.name || "";
+        return fullName.split("/").pop() || "";
+      })
+      .filter(name => name && name.includes("gemini") && name.includes("generateContent") === false);
+    console.log("[REST] Available Gemini models for reflection:", availableModels);
+  } catch (listError) {
+    console.log("[REST] Could not list models, using defaults", listError);
+  }
+
+  const defaultModels = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
+  const modelNames = availableModels.length > 0 ? availableModels : defaultModels;
+  let lastError: Error | null = null;
+
+  for (const modelName of modelNames) {
+    try {
+      const url = `${GEMINI_API_BASE}/models/${modelName}:generateContent?key=${API_KEY}`;
+      
+      console.log(`[REST] Attempting to call ${modelName} for reflection...`);
+      
+      const requestBody = {
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }]
+      };
+
+      const response: AxiosResponse<{
+        candidates?: Array<{
+          content?: {
+            parts?: Array<{
+              text?: string;
+            }>;
+          };
+        }>;
+      }> = await axios.post(url, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const text = response.data.candidates?.[0]?.content?.parts?.[0]?.text;
+      
+      if (!text) {
+        throw new Error("No response text from Gemini API");
+      }
+
+      console.log(`[REST] Successfully generated reflection response using ${modelName}`);
+      return text.trim();
+    } catch (modelError) {
+      if (axios.isAxiosError(modelError)) {
+        const errorMsg = modelError.response?.data?.error?.message || modelError.message;
+        lastError = new Error(errorMsg);
+        console.log(`[REST] Model ${modelName} failed for reflection, trying next...`, errorMsg);
+      } else {
+        lastError = modelError instanceof Error ? modelError : new Error(String(modelError));
+        console.log(`[REST] Model ${modelName} failed for reflection, trying next...`, lastError.message);
+      }
+      continue;
+    }
+  }
+
+  if (lastError) {
+    throw new Error(
+      `Failed to connect to Gemini API with any available model. Last error: ${lastError.message}. ` +
+      `Please check your API key and ensure it has access to Gemini models.`
+    );
+  }
+
+  throw new Error("Unable to connect to Gemini API. No models available.");
+}

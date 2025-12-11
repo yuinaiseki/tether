@@ -9,13 +9,15 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Image,
-  Platform
+  Platform,
+  ActivityIndicator
 } from 'react-native';
 import styles from '../../styles/styles';
 import { palette } from '../../styles/palette';
 import { ChevronLeft, Send, Sparkles } from 'lucide-react-native';
 import portalStyles from '../../styles/portalStyles';
 import { updatePortalStep } from '../../utils/portalProgress';
+import { getReflectionAIResponse } from '../../utils/gemini';
 
 interface ReflectProps {
   contact?: { id: string; name: string; color: any };
@@ -59,28 +61,46 @@ export const Reflect = ({ contact, onBack, onContinue, onBackToPortal }: Reflect
     }
   ]);
   const [inputText, setInputText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSend = () => {
-    if (inputText.trim()) {
+  const handleSend = async () => {
+    if (inputText.trim() && !isLoading) {
+      const userInput = inputText.trim();
+      
       // Add user message
       const userMessage: ChatMessage = {
         id: Date.now().toString(),
-        text: inputText.trim(),
+        text: userInput,
         isAI: false
       };
-      setMessages([...messages, userMessage]);
+      const updatedMessages = [...messages, userMessage];
+      setMessages(updatedMessages);
+      setIsLoading(true);
+      setInputText('');
       
-      // Simulate AI response
-      setTimeout(() => {
+      try {
+        // Call Gemini AI to get response
+        const aiResponseText = await getReflectionAIResponse(userInput, contactName, messages);
+        
+        // Add AI response
         const aiResponse: ChatMessage = {
           id: (Date.now() + 1).toString(),
-          text: `Thank you for sharing that. Reflecting on difficult conversations helps us learn and grow. It's okay to have mixed feelings—what matters is that you showed up and engaged with honesty. What else would you like to process about this experience?`,
+          text: aiResponseText,
           isAI: true
         };
         setMessages(prev => [...prev, aiResponse]);
-      }, 1000);
-      
-      setInputText('');
+      } catch (error) {
+        console.error('Error getting AI response:', error);
+        // Add error message
+        const errorResponse: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          text: `I'm sorry, I encountered an error while processing your reflection. Please try again or check your internet connection.`,
+          isAI: true
+        };
+        setMessages(prev => [...prev, errorResponse]);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -138,9 +158,18 @@ export const Reflect = ({ contact, onBack, onContinue, onBackToPortal }: Reflect
                 placeholder="Share your thoughts about the conversation, what you learned, or how you're feeling..."
                 placeholderTextColor={palette.mutedBrown}
                 multiline
+                editable={!isLoading}
               />
-              <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
-                <Send size={26} color={palette.slate} />
+              <TouchableOpacity 
+                onPress={handleSend} 
+                style={styles.sendButton}
+                disabled={isLoading || !inputText.trim()}
+              >
+                {isLoading ? (
+                  <ActivityIndicator size="small" color={palette.slate} />
+                ) : (
+                  <Send size={26} color={palette.slate} />
+                )}
               </TouchableOpacity>
             </View> 
               <TouchableOpacity
