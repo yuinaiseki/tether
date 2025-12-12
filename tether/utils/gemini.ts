@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import Constants from "expo-constants";
 
-const API_KEY = Constants.expoConfig?.extra?.geminiApiKey || process.env.EXPO_PUBLIC_GEMINI_API_KEY || "AIzaSyDRyjxIqwkTQusFIzLXbTgnrsT9urhLEu0";
+const API_KEY = Constants.expoConfig?.extra?.geminiApiKey || process.env.EXPO_PUBLIC_GEMINI_API_KEY;
 
 if (!API_KEY) {
   console.warn("Warning: Gemini API key not found. Please set EXPO_PUBLIC_GEMINI_API_KEY in your environment.");
